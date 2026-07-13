@@ -1,0 +1,30 @@
+{
+  "name": "sidequest",
+  "version": "1.0.0",
+  "description": "This document provides an overview of how the SideQuest repository is organized and the intended purpose of each directory. The goal is to keep the project modular, easy to navigate, and scalable as we continue to iterate throughout the semester. **Not every file or folder will be populated immediately**—many will be created as features are implemented.",
+  "main": "eslint.config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+  "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+  "client": "npm run dev --prefix client",
+  "server": "npm run dev --prefix server",
+  "format": "prettier --write ."
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesjacob2001/SideQuest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamesjacob2001/SideQuest/issues"
+  },
+  "homepage": "https://github.com/jamesjacob2001/SideQuest#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3",
+    "prettier": "^3.9.5"
+  }
+}
