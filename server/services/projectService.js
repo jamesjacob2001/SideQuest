@@ -63,3 +63,13 @@ export async function updateProjectById(
     _id: objectId,
   });
 }
+
+export async function deleteProjectById(projectId) {
+  const database = getDatabase();
+
+  const result = await database.collection("projects").deleteOne({
+    _id: new ObjectId(projectId),
+  });
+
+  return result.deletedCount === 1;
+}

@@ -1,4 +1,4 @@
-import { getPublicProjects, getProjectById, createProject, updateProjectById, } from "../services/projectService.js";
+import { getPublicProjects, getProjectById, createProject, updateProjectById, deleteProjectById, } from "../services/projectService.js";
 import { buildProjectDocument, buildUpdatedProjectDocument, } from "../utils/buildProjectDocument.js";
 import { validateProject } from "../utils/validators/projectValidator.js";
 
@@ -113,6 +113,28 @@ export async function editProject(request, response, next) {
       success: true,
       data: updatedProject,
       message: "Project updated successfully.",
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
+
+export async function removeProject(request, response, next) {
+  try {
+    const wasDeleted = await deleteProjectById(request.params.id);
+
+    if (!wasDeleted) {
+      return response.status(404).json({
+        success: false,
+        data: null,
+        message: "Project not found.",
+      });
+    }
+
+    return response.status(200).json({
+      success: true,
+      data: null,
+      message: "Project deleted successfully.",
     });
   } catch (error) {
     return next(error);
