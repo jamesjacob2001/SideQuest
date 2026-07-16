@@ -1,0 +1,62 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pageHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.pageHeader h1 {
+  margin: 0;
+  color: #f4f4f7;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  color: #adafff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.introduction {
+  max-width: 640px;
+  margin: 0.7rem 0 0;
+  color: #c6c7d0;
+  line-height: 1.6;
+}
+
+.link {
+  color: #adafff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.message {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background-color: #22232f;
+  border: 1px solid #343645;
+  border-radius: 16px;
+}
+
+.message h1 {
+  margin-top: 0;
+}
+
+.message p {
+  color: #c6c7d0;
+}

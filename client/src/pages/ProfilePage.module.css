@@ -19,16 +19,17 @@
 .editLink {
   display: inline-flex;
   align-items: center;
-  padding: 0.55rem 0.95rem;
-  color: #171821;
-  background-color: #adafff;
-  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  color: #ffffff;
+  background-color: #6669c5;
+  border-radius: 8px;
+  font: inherit;
   font-weight: 700;
   text-decoration: none;
 }
 
 .editLink:hover {
-  background-color: #c0c2ff;
+  background-color: #7578d8;
 }
 
 .message,

@@ -52,11 +52,24 @@
 }
 
 .recruiting {
-  padding: 0.45rem 0.8rem;
-  color: #d8ffe8;
-  background-color: #2a4a3a;
-  border: 1px solid #3d6b52;
-  border-radius: 999px;
-  font-size: 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  color: #c8caff;
+  background-color: transparent;
+  border: 1px solid #6669c5;
+  border-radius: 8px;
+  font-size: 0.8rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.recruiting::before {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background-color: #8d90f5;
+  content: "";
 }

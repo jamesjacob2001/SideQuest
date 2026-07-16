@@ -1,0 +1,31 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.deleteButton {
+  padding: 0.7rem 1rem;
+  color: #ffd9dd;
+  background-color: transparent;
+  border: 1px solid #a64f5b;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: rgb(166 79 91 / 18%);
+}
+
+.deleteButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.errorMessage {
+  margin: 0;
+  color: #ffd9dd;
+  font-size: 0.9rem;
+}

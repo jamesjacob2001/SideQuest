@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+import DeleteAccountButton from "../components/profiles/DeleteAccountButton.jsx";
 import InterestsList from "../components/profiles/InterestsList.jsx";
 import PortfolioLinks from "../components/profiles/PortfolioLinks.jsx";
 import ProfileDetails from "../components/profiles/ProfileDetails.jsx";
@@ -66,6 +67,7 @@ function ProfilePage() {
         <Link className={styles.editLink} to={`/profile/${id}/edit`}>
           Edit profile
         </Link>
+        <DeleteAccountButton userId={String(user._id)} userName={user.name} />
       </div>
 
       <div className={styles.sections}>
