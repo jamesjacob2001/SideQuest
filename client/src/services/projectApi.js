@@ -31,8 +31,16 @@ async function apiRequest(url, options = {}) {
   return responseBody;
 }
 
-export async function getProjects() {
-  const response = await apiRequest(PROJECTS_ENDPOINT);
+export async function getProjects(page = 1, limit = 24) {
+  const searchParameters = new URLSearchParams({
+    page: String(page),
+    limit: String(limit),
+  });
+
+  const response = await apiRequest(
+    `${PROJECTS_ENDPOINT}?${searchParameters.toString()}`,
+  );
+
   return response.data;
 }
 

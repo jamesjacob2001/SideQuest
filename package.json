@@ -8,12 +8,12 @@
     "doc": "docs"
   },
   "scripts": {
-  "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
-  "client": "npm run dev --prefix client",
-  "server": "npm run dev --prefix server",
-  "format": "prettier --write .",
-  "seed": "node database/seed/seedDatabase.js"
-},
+    "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "client": "npm run dev --prefix client",
+    "server": "npm run dev --prefix server",
+    "format": "prettier --write .",
+    "seed": "node database/seed/seedDatabase.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jamesjacob2001/SideQuest.git"
@@ -28,5 +28,9 @@
   "devDependencies": {
     "concurrently": "^10.0.3",
     "prettier": "^3.9.5"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "mongodb": "^7.5.0"
   }
 }
