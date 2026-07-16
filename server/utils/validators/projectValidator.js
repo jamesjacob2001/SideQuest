@@ -20,6 +20,13 @@ function isOptionalNonEmptyString(value) {
   return value === undefined || value === null || isNonEmptyString(value);
 }
 
+function isStringArrayAllowEmpty(value) {
+  return (
+    Array.isArray(value) &&
+    value.every((item) => isNonEmptyString(item))
+  );
+}
+
 
 function validateRole(role, index) {
   const errors = [];
@@ -29,9 +36,6 @@ function validateRole(role, index) {
     return [`${label} must be an object.`];
   }
 
-  if (!isNonEmptyString(role.roleId)) {
-    errors.push(`${label} must have a roleId.`);
-  }
 
   if (!isNonEmptyString(role.title)) {
     errors.push(`${label} must have a title.`);
@@ -114,14 +118,14 @@ export function validateProject(project) {
   }
 
   if (
-    project.customCategories !== undefined &&
-    project.customCategories !== null &&
-    !isStringArray(project.customCategories)
-  ) {
-    errors.push(
-      "Custom categories must be a non-empty array of strings when provided.",
-    );
-  }
+  project.customCategories !== undefined &&
+  project.customCategories !== null &&
+  !isStringArrayAllowEmpty(project.customCategories)
+) {
+  errors.push(
+    "Custom categories must be an array of non-empty strings.",
+  );
+}
 
   if (
     Array.isArray(project.categories) &&
@@ -143,14 +147,6 @@ export function validateProject(project) {
     project.roles.forEach((role, index) => {
       errors.push(...validateRole(role, index));
     });
-
-    const roleIds = project.roles
-      .map((role) => role?.roleId)
-      .filter(Boolean);
-
-    if (new Set(roleIds).size !== roleIds.length) {
-      errors.push("Every project role must have a unique roleId.");
-    }
   }
 
   if (!LOCATION_TYPES.includes(project.locationType)) {

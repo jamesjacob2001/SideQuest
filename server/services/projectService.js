@@ -25,3 +25,16 @@ export async function getProjectById(projectId) {
     _id: new ObjectId(projectId),
   });
 }
+
+export async function createProject(projectDocument) {
+  const database = getDatabase();
+
+  const result = await database
+    .collection("projects")
+    .insertOne(projectDocument);
+
+  return {
+    ...projectDocument,
+    _id: result.insertedId,
+  };
+}
