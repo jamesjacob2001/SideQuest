@@ -1,13 +1,215 @@
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+
+import ProjectRoleCard from "../components/projects/ProjectRoleCard.jsx";
+import { getProjectById } from "../services/projectApi.js";
+import styles from "./ProjectDetailsPage.module.css";
 
 function ProjectDetailsPage() {
-  const { id } = useParams();
+  const { projectId } = useParams();
+
+  const [project, setProject] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errorStatus, setErrorStatus] = useState(null);
+
+  useEffect(() => {
+    async function loadProject() {
+      try {
+        const projectData = await getProjectById(projectId);
+        setProject(projectData);
+      } catch (error) {
+        setErrorMessage(error.message);
+        setErrorStatus(error.status);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadProject();
+  }, [projectId]);
+
+  if (isLoading) {
+    return (
+      <section className={styles.message} role="status">
+        Loading project...
+      </section>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <section className={styles.message} role="alert">
+        <h1>
+          {errorStatus === 404
+            ? "Project not found"
+            : "Project could not be loaded"}
+        </h1>
+
+        <p>{errorMessage}</p>
+
+        <Link className={styles.backLink} to="/projects">
+          Return to projects
+        </Link>
+      </section>
+    );
+  }
+
+  const {
+    title,
+    tagline,
+    description = {},
+    categories = [],
+    customCategories = [],
+    technologies = [],
+    roles = [],
+    locationType,
+    location,
+    status,
+    experienceLevel,
+    weeklyCommitment,
+    duration,
+    compensation,
+  } = project;
+
+  const allCategories = [...categories, ...customCategories];
 
   return (
-    <section>
-      <h1>Project Details</h1>
-      <p>Project ID: {id}</p>
-    </section>
+    <main className={styles.page}>
+      <Link className={styles.backLink} to="/projects">
+        ← Back to projects
+      </Link>
+
+      <header className={styles.hero}>
+        <div className={styles.heroContent}>
+          <div className={styles.badges}>
+            <span>{status}</span>
+            <span>{locationType}</span>
+          </div>
+
+          <h1>{title}</h1>
+          <p className={styles.tagline}>{tagline}</p>
+        </div>
+      </header>
+
+      <div className={styles.layout}>
+        <div className={styles.mainContent}>
+          <section className={styles.contentSection}>
+            <h2>Project overview</h2>
+            <p>{description.overview}</p>
+          </section>
+
+          <section className={styles.contentSection}>
+            <h2>Goals</h2>
+            <p>{description.goals}</p>
+          </section>
+
+          <section className={styles.contentSection}>
+            <h2>Current progress</h2>
+            <p>{description.currentProgress}</p>
+          </section>
+
+          <section className={styles.contentSection}>
+            <h2>Who the team is looking for</h2>
+            <p>{description.lookingFor}</p>
+          </section>
+
+          <section className={styles.contentSection}>
+            <h2>Open roles</h2>
+
+            <div className={styles.roleList}>
+              {roles.map((role) => (
+                <ProjectRoleCard
+                  key={role.roleId ?? role.title}
+                  role={role}
+                />
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <aside className={styles.sidebar}>
+          <section className={styles.sidebarCard}>
+            <h2>Project details</h2>
+
+            <dl className={styles.detailList}>
+              <div>
+                <dt>Status</dt>
+                <dd>{status}</dd>
+              </div>
+
+              <div>
+                <dt>Location type</dt>
+                <dd>{locationType}</dd>
+              </div>
+
+              {location && (
+                <div>
+                  <dt>Location</dt>
+                  <dd>{location}</dd>
+                </div>
+              )}
+
+              {experienceLevel && (
+                <div>
+                  <dt>Experience level</dt>
+                  <dd>{experienceLevel}</dd>
+                </div>
+              )}
+
+              {weeklyCommitment && (
+                <div>
+                  <dt>Weekly commitment</dt>
+                  <dd>{weeklyCommitment}</dd>
+                </div>
+              )}
+
+              {duration && (
+                <div>
+                  <dt>Duration</dt>
+                  <dd>{duration}</dd>
+                </div>
+              )}
+
+              {compensation && (
+                <div>
+                  <dt>Compensation</dt>
+                  <dd>{compensation}</dd>
+                </div>
+              )}
+            </dl>
+          </section>
+
+          {allCategories.length > 0 && (
+            <section className={styles.sidebarCard}>
+              <h2>Categories</h2>
+
+              <div className={styles.tagList}>
+                {allCategories.map((category) => (
+                  <span className={styles.categoryTag} key={category}>
+                    {category}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {technologies.length > 0 && (
+            <section className={styles.sidebarCard}>
+              <h2>Technologies</h2>
+
+              <div className={styles.tagList}>
+                {technologies.map((technology) => (
+                  <span className={styles.technologyTag} key={technology}>
+                    {technology}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+        </aside>
+      </div>
+    </main>
   );
 }
 
