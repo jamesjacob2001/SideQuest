@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 import { getDatabase } from "../config/database.js";
 
 export async function getPublicProjects() {
@@ -16,3 +18,10 @@ export async function getPublicProjects() {
     .toArray();
 }
 
+export async function getProjectById(projectId) {
+  const database = getDatabase();
+
+  return database.collection("projects").findOne({
+    _id: new ObjectId(projectId),
+  });
+}

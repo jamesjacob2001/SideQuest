@@ -1,4 +1,4 @@
-import { getPublicProjects } from "../services/projectService.js";
+import { getPublicProjects, getProjectById, } from "../services/projectService.js";
 
 export async function listProjects(request, response, next) {
   try {
@@ -14,3 +14,24 @@ export async function listProjects(request, response, next) {
   }
 }
 
+export async function showProject(request, response, next) {
+  try {
+    const project = await getProjectById(request.params.id);
+
+    if (!project) {
+      return response.status(404).json({
+        success: false,
+        data: null,
+        message: "Project not found.",
+      });
+    }
+
+    return response.status(200).json({
+      success: true,
+      data: project,
+      message: "Project retrieved successfully.",
+    });
+  } catch (error) {
+    return next(error);
+  }
+}
