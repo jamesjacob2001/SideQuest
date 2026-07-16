@@ -33,7 +33,7 @@ function ProfileHeader({
       </div>
 
       {isRecruiting ? (
-        <span className={styles.recruiting}>Looking for projects</span>
+        <span className={styles.recruiting}>Open to collaborate</span>
       ) : null}
     </header>
   );

@@ -23,9 +23,9 @@ Each document in the `users` collection represents one SideQuest account and pro
 | `graduationYear` | Number | No | Expected graduation year |
 | `yearLabel` | String | No | Class standing label |
 | `bio` | String | No | Short profile biography |
-| `technicalSkills` | Array of strings | No | Technical skills |
-| `interests` | Array of strings | No | Project or topic interests |
-| `rolePreferences` | Array of strings | No | Preferred collaboration roles |
+| `technicalSkills` | Array of strings | No | Skills of any kind (design, research, writing, coding, etc.) |
+| `interests` | Array of strings | No | Project topics or domains of interest across categories |
+| `rolePreferences` | Array of strings | No | Preferred collaboration roles on any project type |
 | `experienceLevel` | String | No | `Beginner`, `Intermediate`, or `Advanced` |
 | `availability` | String | No | Weekly availability band |
 | `portfolioLinks` | Object | No | External profile links |

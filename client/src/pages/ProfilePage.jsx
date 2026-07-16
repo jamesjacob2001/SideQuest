@@ -5,6 +5,7 @@ import InterestsList from "../components/profiles/InterestsList.jsx";
 import PortfolioLinks from "../components/profiles/PortfolioLinks.jsx";
 import ProfileDetails from "../components/profiles/ProfileDetails.jsx";
 import ProfileHeader from "../components/profiles/ProfileHeader.jsx";
+import RolePreferencesList from "../components/profiles/RolePreferencesList.jsx";
 import SkillsList from "../components/profiles/SkillsList.jsx";
 import { getUserById } from "../services/userApi.js";
 import styles from "./ProfilePage.module.css";
@@ -79,6 +80,7 @@ function ProfilePage() {
 
         <SkillsList skills={user.technicalSkills} />
         <InterestsList interests={user.interests} />
+        <RolePreferencesList roles={user.rolePreferences} />
         <PortfolioLinks portfolioLinks={user.portfolioLinks} />
       </div>
     </article>

@@ -10,7 +10,7 @@ function SkillsList({ skills }) {
   return (
     <section className={styles.section} aria-labelledby="skills-heading">
       <h2 className={styles.heading} id="skills-heading">
-        Technical skills
+        Skills
       </h2>
 
       <ul className={styles.list}>
