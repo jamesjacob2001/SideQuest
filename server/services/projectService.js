@@ -2,6 +2,80 @@ import { ObjectId } from "mongodb";
 
 import { getDatabase } from "../config/database.js";
 
+function isValidObjectId(value) {
+  if (value == null) {
+    return false;
+  }
+
+  const id = String(value);
+  return ObjectId.isValid(id) && String(new ObjectId(id)) === id;
+}
+
+function summarizeOwner(user) {
+  if (!user) {
+    return null;
+  }
+
+  return {
+    _id: user._id,
+    name: user.name,
+    username: user.username,
+    profileImageUrl: user.profileImageUrl ?? null,
+  };
+}
+
+async function getOwnersByIds(ownerIds) {
+  const uniqueIds = [
+    ...new Set(
+      ownerIds.filter(isValidObjectId).map((ownerId) => String(ownerId)),
+    ),
+  ];
+
+  if (uniqueIds.length === 0) {
+    return new Map();
+  }
+
+  const users = await getDatabase()
+    .collection("users")
+    .find(
+      {
+        _id: {
+          $in: uniqueIds.map((id) => new ObjectId(id)),
+        },
+      },
+      {
+        projection: {
+          name: 1,
+          username: 1,
+          profileImageUrl: 1,
+        },
+      },
+    )
+    .toArray();
+
+  return new Map(users.map((user) => [user._id.toString(), user]));
+}
+
+async function attachOwners(projects) {
+  const ownersById = await getOwnersByIds(
+    projects.map((project) => project.ownerId),
+  );
+
+  return projects.map((project) => ({
+    ...project,
+    owner: summarizeOwner(ownersById.get(String(project.ownerId))),
+  }));
+}
+
+async function attachOwner(project) {
+  if (!project) {
+    return null;
+  }
+
+  const [projectWithOwner] = await attachOwners([project]);
+  return projectWithOwner;
+}
+
 export async function getPublicProjects(page, limit) {
   const database = getDatabase();
   const projectsCollection = database.collection("projects");
@@ -28,7 +102,7 @@ export async function getPublicProjects(page, limit) {
   ]);
 
   return {
-    projects,
+    projects: await attachOwners(projects),
     totalProjects,
   };
 }
@@ -36,9 +110,11 @@ export async function getPublicProjects(page, limit) {
 export async function getProjectById(projectId) {
   const database = getDatabase();
 
-  return database.collection("projects").findOne({
+  const project = await database.collection("projects").findOne({
     _id: new ObjectId(projectId),
   });
+
+  return attachOwner(project);
 }
 
 export async function createProject(projectDocument) {

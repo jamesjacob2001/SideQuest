@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate, } from "react-router-dom";
 
 import { useAuth } from "../components/auth/AuthContext.jsx";
+import ProjectOwner from "../components/projects/ProjectOwner.jsx";
 import ProjectRoleCard from "../components/projects/ProjectRoleCard.jsx";
 import { getProjectById, deleteProject, } from "../services/projectApi.js";
 import styles from "./ProjectDetailsPage.module.css";
@@ -96,6 +97,7 @@ function ProjectDetailsPage() {
     weeklyCommitment,
     duration,
     compensation,
+    owner,
   } = project;
 
   const allCategories = [...categories, ...customCategories];
@@ -117,6 +119,12 @@ function ProjectDetailsPage() {
 
           <h1>{title}</h1>
           <p className={styles.tagline}>{tagline}</p>
+
+          {owner ? (
+            <div className={styles.ownerRow}>
+              <ProjectOwner owner={owner} />
+            </div>
+          ) : null}
 
           {isOwner ? (
             <div className={styles.projectActions}>

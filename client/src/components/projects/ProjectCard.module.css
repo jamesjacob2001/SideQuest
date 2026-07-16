@@ -71,6 +71,10 @@
   line-height: 1.6;
 }
 
+.ownerRow {
+  margin-top: 0.85rem;
+}
+
 .section {
   display: flex;
   flex-direction: column;

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
+import ProjectOwner from "./ProjectOwner.jsx";
 import styles from "./ProjectCard.module.css";
 
 function calculateTotalPositions(roles) {
@@ -20,6 +21,7 @@ function ProjectCard({ project }) {
     roles = [],
     locationType,
     status,
+    owner,
   } = project;
 
   const totalPositions = calculateTotalPositions(roles);
@@ -41,6 +43,12 @@ function ProjectCard({ project }) {
           </h2>
 
           <p className={styles.tagline}>{tagline}</p>
+
+          {owner ? (
+            <div className={styles.ownerRow}>
+              <ProjectOwner owner={owner} />
+            </div>
+          ) : null}
         </div>
 
         <div className={styles.section}>
@@ -108,6 +116,12 @@ ProjectCard.propTypes = {
     ),
     locationType: PropTypes.string.isRequired,
     status: PropTypes.string.isRequired,
+    owner: PropTypes.shape({
+      _id: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+      name: PropTypes.string,
+      username: PropTypes.string,
+      profileImageUrl: PropTypes.string,
+    }),
   }).isRequired,
 };
 

@@ -1,0 +1,28 @@
+.owner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #d7d8e0;
+  text-decoration: none;
+}
+
+.owner:hover .name {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 0.15rem;
+}
+
+.avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #454756;
+  background-color: #22232f;
+}
+
+.name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.2;
+}

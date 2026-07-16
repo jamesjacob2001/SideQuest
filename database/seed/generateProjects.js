@@ -141,7 +141,13 @@ function generateCreatedAt(index) {
   );
 }
 
-export function generateProjects(count = 1000) {
+export function generateProjects(count = 1000, ownerIds = []) {
+  if (!Array.isArray(ownerIds) || ownerIds.length === 0) {
+    throw new Error(
+      "generateProjects requires a non-empty ownerIds array of user _id values.",
+    );
+  }
+
   return Array.from({ length: count }, (_, index) => {
     const theme = randomItem(PROJECT_THEMES);
     const locationType = randomItem(LOCATION_TYPES);
@@ -168,7 +174,7 @@ export function generateProjects(count = 1000) {
     const roleCount = randomInteger(1, 3);
 
     return {
-      ownerId: "TEMP_OWNER",
+      ownerId: ownerIds[index % ownerIds.length],
       title: generateProjectTitle(theme, index),
       tagline:
         theme.taglines?.length > 0

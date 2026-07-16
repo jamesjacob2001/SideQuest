@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "rehash-passwords": "node scripts/rehashUserPasswords.js"
+    "rehash-passwords": "node scripts/rehashUserPasswords.js",
+    "assign-project-owners": "node scripts/assignProjectOwners.js"
   },
   "keywords": [],
   "author": "",

@@ -23,13 +23,25 @@ async function seedDatabase() {
 
     const database = client.db(databaseName);
     const projectsCollection = database.collection("projects");
+    const usersCollection = database.collection("users");
 
-    const projects = generateProjects(1000);
+    const users = await usersCollection
+      .find({}, { projection: { _id: 1 } })
+      .toArray();
+
+    if (users.length === 0) {
+      throw new Error(
+        "No users found. Import users before seeding projects.",
+      );
+    }
+
+    const ownerIds = users.map((user) => user._id);
+    const projects = generateProjects(1000, ownerIds);
 
     const result = await projectsCollection.insertMany(projects);
 
     console.log(
-      `Inserted ${result.insertedCount} synthetic projects.`,
+      `Inserted ${result.insertedCount} synthetic projects owned by ${ownerIds.length} users.`,
     );
   } finally {
     await client.close();
