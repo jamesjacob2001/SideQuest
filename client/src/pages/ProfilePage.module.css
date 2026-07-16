@@ -1,0 +1,56 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.editLink {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.55rem 0.95rem;
+  color: #171821;
+  background-color: #adafff;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.editLink:hover {
+  background-color: #c0c2ff;
+}
+
+.message,
+.errorMessage {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background-color: #22232f;
+  border: 1px solid #343645;
+  border-radius: 16px;
+}
+
+.errorMessage {
+  border-color: #a64f5b;
+}
+
+.message h1,
+.errorMessage h1 {
+  margin-top: 0;
+}
+
+.message p,
+.errorMessage p {
+  margin-bottom: 0;
+  color: #c6c7d0;
+}

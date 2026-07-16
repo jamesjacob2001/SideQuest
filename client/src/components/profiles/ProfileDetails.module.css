@@ -1,0 +1,42 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.heading {
+  margin: 0;
+  color: #f4f4f7;
+  font-size: 1.25rem;
+}
+
+.bio {
+  margin: 0;
+  color: #c6c7d0;
+  line-height: 1.7;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+  margin: 0;
+}
+
+.item {
+  margin: 0;
+}
+
+.label {
+  margin: 0 0 0.35rem;
+  color: #a8a9b5;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.value {
+  margin: 0;
+  color: #e8e8ed;
+  font-weight: 600;
+}

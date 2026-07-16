@@ -1,13 +1,88 @@
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+
+import InterestsList from "../components/profiles/InterestsList.jsx";
+import PortfolioLinks from "../components/profiles/PortfolioLinks.jsx";
+import ProfileDetails from "../components/profiles/ProfileDetails.jsx";
+import ProfileHeader from "../components/profiles/ProfileHeader.jsx";
+import SkillsList from "../components/profiles/SkillsList.jsx";
+import { getUserById } from "../services/userApi.js";
+import styles from "./ProfilePage.module.css";
 
 function ProfilePage() {
   const { id } = useParams();
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    async function loadUser() {
+      try {
+        const userData = await getUserById(id);
+        setUser(userData);
+      } catch (error) {
+        setErrorMessage(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadUser();
+  }, [id]);
+
+  if (isLoading) {
+    return (
+      <div className={styles.message} role="status">
+        Loading profile...
+      </div>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <div className={styles.errorMessage} role="alert">
+        <h1>Profile could not be loaded</h1>
+        <p>{errorMessage}</p>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
 
   return (
-    <section>
-      <h1>User Profile</h1>
-      <p>User ID: {id}</p>
-    </section>
+    <article className={styles.page}>
+      <ProfileHeader
+        isRecruiting={user.isRecruiting}
+        major={user.major}
+        name={user.name}
+        profileImageUrl={user.profileImageUrl}
+        university={user.university}
+        username={user.username}
+      />
+
+      <div className={styles.actions}>
+        <Link className={styles.editLink} to={`/profile/${id}/edit`}>
+          Edit profile
+        </Link>
+      </div>
+
+      <div className={styles.sections}>
+        <ProfileDetails
+          availability={user.availability}
+          bio={user.bio}
+          experienceLevel={user.experienceLevel}
+          graduationYear={user.graduationYear}
+          location={user.location}
+          yearLabel={user.yearLabel}
+        />
+
+        <SkillsList skills={user.technicalSkills} />
+        <InterestsList interests={user.interests} />
+        <PortfolioLinks portfolioLinks={user.portfolioLinks} />
+      </div>
+    </article>
   );
 }
 
