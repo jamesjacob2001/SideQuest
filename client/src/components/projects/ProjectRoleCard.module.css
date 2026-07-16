@@ -1,0 +1,66 @@
+.card {
+  padding: 1.35rem;
+  background-color: #22232f;
+  border: 1px solid #343645;
+  border-radius: 14px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.header h3 {
+  margin: 0;
+  color: #f4f4f7;
+  font-size: 1.15rem;
+}
+
+.experience {
+  margin: 0.4rem 0 0;
+  color: #adafff;
+  font-size: 0.85rem;
+}
+
+.positions {
+  flex-shrink: 0;
+  padding: 0.4rem 0.7rem;
+  color: #d8d9df;
+  background-color: #343645;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.description {
+  margin: 1rem 0 0;
+  color: #c6c7d0;
+  line-height: 1.65;
+}
+
+.skillsSection {
+  margin-top: 1.15rem;
+}
+
+.skillsSection h4 {
+  margin: 0 0 0.6rem;
+  color: #a8a9b5;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill {
+  padding: 0.35rem 0.65rem;
+  color: #e3e3e8;
+  background-color: #343645;
+  border-radius: 999px;
+  font-size: 0.78rem;
+}

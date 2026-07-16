@@ -11,6 +11,7 @@ function Navbar() {
 
         <div className={styles.links}>
           <NavLink to="/projects">Browse Projects</NavLink>
+          <NavLink to="/projects/new">Create Project</NavLink>
           <NavLink to="/dashboard">Dashboard</NavLink>
           <NavLink to="/login">Log In</NavLink>
           <NavLink to="/register">Sign Up</NavLink>

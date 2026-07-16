@@ -1,0 +1,224 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formSection,
+.errorSummary {
+  padding: 1.75rem;
+  background-color: #22232f;
+  border: 1px solid #343645;
+  border-radius: 16px;
+}
+
+.sectionHeading {
+  margin-bottom: 1.5rem;
+}
+
+.sectionHeading h2 {
+  margin: 0;
+  color: #f4f4f7;
+}
+
+.sectionHeading p {
+  margin: 0.5rem 0 0;
+  color: #aeb0ba;
+}
+
+.field,
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field + .field,
+.fieldset + .field,
+.field + .fieldset,
+.fieldset + .fieldset {
+  margin-top: 1.25rem;
+}
+
+.field label,
+.fieldset legend,
+.roleCard legend {
+  color: #e4e4e9;
+  font-weight: 700;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  padding: 0.8rem 0.9rem;
+  color: #f4f4f7;
+  background-color: #181923;
+  border: 1px solid #454756;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  border-color: #8d90f5;
+  outline: 2px solid rgb(141 144 245 / 25%);
+  outline-offset: 1px;
+}
+
+.helpText {
+  margin: 0;
+  color: #9ea0ab;
+  font-size: 0.85rem;
+}
+
+.fieldset,
+.roleCard {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.65rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem;
+  color: #d8d9df;
+  background-color: #2b2d3a;
+  border: 1px solid #3f4150;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  width: auto;
+}
+
+.twoColumnFields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.roleList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.roleCard {
+  padding: 1.35rem;
+  background-color: #1b1c26;
+  border: 1px solid #3b3d4c;
+  border-radius: 12px;
+}
+
+.roleCard > legend {
+  padding: 0 0.4rem;
+  color: #adafff;
+}
+
+.inlineField {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.inlineField .field {
+  flex: 1;
+}
+
+.selectedSkills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.skillButton {
+  padding: 0.4rem 0.7rem;
+  color: #dedff4;
+  background-color: #424475;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.secondaryButton,
+.dangerButton,
+.submitButton {
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondaryButton {
+  color: #dedff4;
+  background-color: transparent;
+  border: 1px solid #6669c5;
+}
+
+.dangerButton {
+  margin-top: 1.25rem;
+  color: #ffc8ce;
+  background-color: transparent;
+  border: 1px solid #9f4f59;
+}
+
+.submitButton {
+  color: #ffffff;
+  background-color: #6669c5;
+  border: 0;
+}
+
+.submitButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.errorSummary {
+  border-color: #a64f5b;
+}
+
+.errorSummary h2 {
+  margin-top: 0;
+  color: #ffd8dc;
+}
+
+.errorSummary p,
+.errorSummary li {
+  color: #f0c8cd;
+}
+
+@media (max-width: 800px) {
+  .twoColumnFields {
+    grid-template-columns: 1fr;
+  }
+
+  .inlineField {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}

@@ -174,7 +174,13 @@ function ProjectDetailsPage() {
               {compensation && (
                 <div>
                   <dt>Compensation</dt>
-                  <dd>{compensation}</dd>
+                  <dd>
+                    {compensation.type}
+                    {compensation.amount !== undefined &&
+                      ` — ${compensation.amount}`}
+                    {compensation.currency &&
+                      ` ${compensation.currency}`}
+                  </dd>
                 </div>
               )}
             </dl>

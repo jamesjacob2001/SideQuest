@@ -1,0 +1,740 @@
+import { useState } from "react";
+import PropTypes from "prop-types";
+
+import {
+  EXPERIENCE_LEVELS,
+  LOCATION_TYPES,
+  PROJECT_CATEGORIES,
+  PROJECT_STATUSES,
+  TECHNOLOGY_OPTIONS,
+} from "../../constants/projectOptions.js";
+import styles from "./ProjectForm.module.css";
+
+function createEmptyRole() {
+  return {
+    title: "",
+    description: "",
+    requiredSkills: [],
+    customSkill: "",
+    experienceLevel: "Open to All Levels",
+    totalPositions: 1,
+  };
+}
+
+const initialFormData = {
+  title: "",
+  tagline: "",
+  description: {
+    overview: "",
+    goals: "",
+    currentProgress: "",
+    lookingFor: "",
+  },
+  categories: [],
+  customCategory: "",
+  technologies: [],
+  customTechnology: "",
+  roles: [createEmptyRole()],
+  experienceLevel: "Open to All Levels",
+  locationType: "Remote",
+  location: "",
+  weeklyCommitment: "",
+  duration: "",
+  compensation: "",
+  status: "Recruiting",
+};
+
+function ProjectForm({
+  onSubmit,
+  isSubmitting = false,
+  submitLabel = "Create Project",
+}) {
+  const [formData, setFormData] = useState(initialFormData);
+  const [formError, setFormError] = useState("");
+  const [validationErrors, setValidationErrors] = useState([]);
+
+  function handleFieldChange(event) {
+    const { name, value } = event.target;
+
+    setFormData((currentData) => ({
+      ...currentData,
+      [name]: value,
+    }));
+  }
+
+  function handleDescriptionChange(event) {
+    const { name, value } = event.target;
+
+    setFormData((currentData) => ({
+      ...currentData,
+      description: {
+        ...currentData.description,
+        [name]: value,
+      },
+    }));
+  }
+
+  function handleCheckboxChange(event, fieldName) {
+    const { value, checked } = event.target;
+
+    setFormData((currentData) => {
+      const currentValues = currentData[fieldName];
+
+      return {
+        ...currentData,
+        [fieldName]: checked
+          ? [...currentValues, value]
+          : currentValues.filter((item) => item !== value),
+      };
+    });
+  }
+
+  function handleRoleChange(roleIndex, event) {
+    const { name, value } = event.target;
+
+    setFormData((currentData) => ({
+      ...currentData,
+      roles: currentData.roles.map((role, index) =>
+        index === roleIndex
+          ? {
+              ...role,
+              [name]:
+                name === "totalPositions" ? Number(value) : value,
+            }
+          : role,
+      ),
+    }));
+  }
+
+  function handleRoleSkillChange(roleIndex, event) {
+    const { value, checked } = event.target;
+
+    setFormData((currentData) => ({
+      ...currentData,
+      roles: currentData.roles.map((role, index) => {
+        if (index !== roleIndex) {
+          return role;
+        }
+
+        return {
+          ...role,
+          requiredSkills: checked
+            ? [...role.requiredSkills, value]
+            : role.requiredSkills.filter((skill) => skill !== value),
+        };
+      }),
+    }));
+  }
+
+  function addRole() {
+    setFormData((currentData) => ({
+      ...currentData,
+      roles: [...currentData.roles, createEmptyRole()],
+    }));
+  }
+
+  function removeRole(roleIndex) {
+    setFormData((currentData) => ({
+      ...currentData,
+      roles: currentData.roles.filter(
+        (_, index) => index !== roleIndex,
+      ),
+    }));
+  }
+    function addCustomSkill(roleIndex) {
+    const role = formData.roles[roleIndex];
+    const customSkill = role.customSkill.trim();
+
+    if (
+      !customSkill ||
+      role.requiredSkills.some(
+        (skill) =>
+          skill.toLowerCase() === customSkill.toLowerCase(),
+      )
+    ) {
+      return;
+    }
+
+    setFormData((currentData) => ({
+      ...currentData,
+      roles: currentData.roles.map((currentRole, index) =>
+        index === roleIndex
+          ? {
+              ...currentRole,
+              requiredSkills: [
+                ...currentRole.requiredSkills,
+                customSkill,
+              ],
+              customSkill: "",
+            }
+          : currentRole,
+      ),
+    }));
+  }
+
+  function removeRoleSkill(roleIndex, skillToRemove) {
+    setFormData((currentData) => ({
+      ...currentData,
+      roles: currentData.roles.map((role, index) =>
+        index === roleIndex
+          ? {
+              ...role,
+              requiredSkills: role.requiredSkills.filter(
+                (skill) => skill !== skillToRemove,
+              ),
+            }
+          : role,
+      ),
+    }));
+  }  function buildProjectPayload() {
+    const customCategory = formData.customCategory.trim();
+    const customTechnology = formData.customTechnology.trim();
+
+    return {
+      title: formData.title.trim(),
+      tagline: formData.tagline.trim(),
+      description: {
+        overview: formData.description.overview.trim(),
+        goals: formData.description.goals.trim(),
+        currentProgress:
+          formData.description.currentProgress.trim(),
+        lookingFor: formData.description.lookingFor.trim(),
+      },
+      categories: formData.categories,
+      customCategories:
+        formData.categories.includes("Other") && customCategory
+          ? [customCategory]
+          : [],
+      technologies: customTechnology
+        ? [...formData.technologies, customTechnology]
+        : formData.technologies,
+      roles: formData.roles.map((role) => ({
+        title: role.title.trim(),
+        description: role.description.trim(),
+        requiredSkills: role.requiredSkills,
+        experienceLevel: role.experienceLevel,
+        totalPositions: Number(role.totalPositions),
+      })),
+      experienceLevel: formData.experienceLevel,
+      locationType: formData.locationType,
+      status: formData.status,
+      ...(formData.location.trim() && {
+        location: formData.location.trim(),
+      }),
+      ...(formData.weeklyCommitment.trim() && {
+        weeklyCommitment: formData.weeklyCommitment.trim(),
+      }),
+      ...(formData.duration.trim() && {
+        duration: formData.duration.trim(),
+      }),
+      ...(formData.compensation.trim() && {
+        compensation: {
+            type: formData.compensation.trim(),
+        },
+     }),
+    };
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+
+    setFormError("");
+    setValidationErrors([]);
+
+    try {
+      await onSubmit(buildProjectPayload());
+    } catch (error) {
+      setFormError(error.message);
+      setValidationErrors(error.details ?? []);
+    }
+  }  return (
+    <form className={styles.form} onSubmit={handleSubmit}>
+      {formError && (
+        <div className={styles.errorSummary} role="alert">
+          <h2>Project could not be created</h2>
+          <p>{formError}</p>
+
+          {validationErrors.length > 0 && (
+            <ul>
+              {validationErrors.map((error, index) => (
+                <li key={`${error}-${index}`}>{error}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
+
+      <section className={styles.formSection}>
+        <div className={styles.sectionHeading}>
+          <h2>Basic information</h2>
+          <p>Introduce the project to potential contributors.</p>
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="title">Project title</label>
+          <input
+            id="title"
+            name="title"
+            type="text"
+            value={formData.title}
+            onChange={handleFieldChange}
+            required
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="tagline">Tagline</label>
+          <input
+            id="tagline"
+            name="tagline"
+            type="text"
+            value={formData.tagline}
+            onChange={handleFieldChange}
+            required
+          />
+          <p className={styles.helpText}>
+            A concise sentence that summarizes the project.
+          </p>
+        </div>
+      </section>
+            <section className={styles.formSection}>
+        <div className={styles.sectionHeading}>
+          <h2>Project description</h2>
+          <p>
+            Explain what the project is, where it is going, and what
+            help is needed.
+          </p>
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="overview">Overview</label>
+          <textarea
+            id="overview"
+            name="overview"
+            rows="5"
+            value={formData.description.overview}
+            onChange={handleDescriptionChange}
+            required
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="goals">Goals</label>
+          <textarea
+            id="goals"
+            name="goals"
+            rows="4"
+            value={formData.description.goals}
+            onChange={handleDescriptionChange}
+            required
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="currentProgress">Current progress</label>
+          <textarea
+            id="currentProgress"
+            name="currentProgress"
+            rows="4"
+            value={formData.description.currentProgress}
+            onChange={handleDescriptionChange}
+            required
+          />
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="lookingFor">
+            Who is the team looking for?
+          </label>
+          <textarea
+            id="lookingFor"
+            name="lookingFor"
+            rows="4"
+            value={formData.description.lookingFor}
+            onChange={handleDescriptionChange}
+            required
+          />
+        </div>
+      </section>
+            <section className={styles.formSection}>
+        <div className={styles.sectionHeading}>
+          <h2>Categories and technologies</h2>
+          <p>Help contributors find relevant projects.</p>
+        </div>
+
+        <fieldset className={styles.fieldset}>
+          <legend>Categories</legend>
+
+          <div className={styles.checkboxGrid}>
+            {PROJECT_CATEGORIES.map((category) => (
+              <label className={styles.checkboxLabel} key={category}>
+                <input
+                  type="checkbox"
+                  value={category}
+                  checked={formData.categories.includes(category)}
+                  onChange={(event) =>
+                    handleCheckboxChange(event, "categories")
+                  }
+                />
+                <span>{category}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        {formData.categories.includes("Other") && (
+          <div className={styles.field}>
+            <label htmlFor="customCategory">
+              Custom category
+            </label>
+            <input
+              id="customCategory"
+              name="customCategory"
+              type="text"
+              value={formData.customCategory}
+              onChange={handleFieldChange}
+              required
+            />
+          </div>
+        )}
+
+        <fieldset className={styles.fieldset}>
+          <legend>Technologies</legend>
+
+          <div className={styles.checkboxGrid}>
+            {TECHNOLOGY_OPTIONS.map((technology) => (
+              <label
+                className={styles.checkboxLabel}
+                key={technology}
+              >
+                <input
+                  type="checkbox"
+                  value={technology}
+                  checked={formData.technologies.includes(technology)}
+                  onChange={(event) =>
+                    handleCheckboxChange(event, "technologies")
+                  }
+                />
+                <span>{technology}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <div className={styles.field}>
+          <label htmlFor="customTechnology">
+            Additional technology
+          </label>
+          <input
+            id="customTechnology"
+            name="customTechnology"
+            type="text"
+            value={formData.customTechnology}
+            onChange={handleFieldChange}
+          />
+        </div>
+      </section>
+            <section className={styles.formSection}>
+        <div className={styles.sectionHeading}>
+          <h2>Open roles</h2>
+          <p>
+            Add at least one role for the contributors you need.
+          </p>
+        </div>
+
+        <div className={styles.roleList}>
+          {formData.roles.map((role, roleIndex) => (
+            <fieldset
+              className={styles.roleCard}
+              key={`role-${roleIndex}`}
+            >
+              <legend>Role {roleIndex + 1}</legend>
+
+              <div className={styles.field}>
+                <label htmlFor={`role-title-${roleIndex}`}>
+                  Role title
+                </label>
+                <input
+                  id={`role-title-${roleIndex}`}
+                  name="title"
+                  type="text"
+                  value={role.title}
+                  onChange={(event) =>
+                    handleRoleChange(roleIndex, event)
+                  }
+                  required
+                />
+              </div>
+
+              <div className={styles.field}>
+                <label htmlFor={`role-description-${roleIndex}`}>
+                  Role description
+                </label>
+                <textarea
+                  id={`role-description-${roleIndex}`}
+                  name="description"
+                  rows="3"
+                  value={role.description}
+                  onChange={(event) =>
+                    handleRoleChange(roleIndex, event)
+                  }
+                />
+              </div>
+
+              <div className={styles.twoColumnFields}>
+                <div className={styles.field}>
+                  <label htmlFor={`role-level-${roleIndex}`}>
+                    Experience level
+                  </label>
+                  <select
+                    id={`role-level-${roleIndex}`}
+                    name="experienceLevel"
+                    value={role.experienceLevel}
+                    onChange={(event) =>
+                      handleRoleChange(roleIndex, event)
+                    }
+                  >
+                    {EXPERIENCE_LEVELS.map((level) => (
+                      <option value={level} key={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className={styles.field}>
+                  <label htmlFor={`role-positions-${roleIndex}`}>
+                    Number of positions
+                  </label>
+                  <input
+                    id={`role-positions-${roleIndex}`}
+                    name="totalPositions"
+                    type="number"
+                    min="1"
+                    value={role.totalPositions}
+                    onChange={(event) =>
+                      handleRoleChange(roleIndex, event)
+                    }
+                    required
+                  />
+                </div>
+              </div>
+                            <fieldset className={styles.fieldset}>
+                <legend>Required skills</legend>
+
+                <div className={styles.checkboxGrid}>
+                  {TECHNOLOGY_OPTIONS.map((skill) => (
+                    <label
+                      className={styles.checkboxLabel}
+                      key={skill}
+                    >
+                      <input
+                        type="checkbox"
+                        value={skill}
+                        checked={role.requiredSkills.includes(skill)}
+                        onChange={(event) =>
+                          handleRoleSkillChange(roleIndex, event)
+                        }
+                      />
+                      <span>{skill}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <div className={styles.inlineField}>
+                <div className={styles.field}>
+                  <label htmlFor={`custom-skill-${roleIndex}`}>
+                    Custom skill
+                  </label>
+                  <input
+                    id={`custom-skill-${roleIndex}`}
+                    name="customSkill"
+                    type="text"
+                    value={role.customSkill}
+                    onChange={(event) =>
+                      handleRoleChange(roleIndex, event)
+                    }
+                  />
+                </div>
+
+                <button
+                  className={styles.secondaryButton}
+                  type="button"
+                  onClick={() => addCustomSkill(roleIndex)}
+                >
+                  Add skill
+                </button>
+              </div>
+
+              {role.requiredSkills.length > 0 && (
+                <div className={styles.selectedSkills}>
+                  {role.requiredSkills.map((skill) => (
+                    <button
+                      className={styles.skillButton}
+                      type="button"
+                      key={skill}
+                      onClick={() =>
+                        removeRoleSkill(roleIndex, skill)
+                      }
+                    >
+                      {skill} ×
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {formData.roles.length > 1 && (
+                <button
+                  className={styles.dangerButton}
+                  type="button"
+                  onClick={() => removeRole(roleIndex)}
+                >
+                  Remove role
+                </button>
+              )}
+            </fieldset>
+          ))}
+        </div>
+
+        <button
+          className={styles.secondaryButton}
+          type="button"
+          onClick={addRole}
+        >
+          Add another role
+        </button>
+      </section>
+            <section className={styles.formSection}>
+        <div className={styles.sectionHeading}>
+          <h2>Project logistics</h2>
+          <p>Describe how and when the team will work together.</p>
+        </div>
+
+        <div className={styles.twoColumnFields}>
+          <div className={styles.field}>
+            <label htmlFor="experienceLevel">
+              Overall experience level
+            </label>
+            <select
+              id="experienceLevel"
+              name="experienceLevel"
+              value={formData.experienceLevel}
+              onChange={handleFieldChange}
+            >
+              {EXPERIENCE_LEVELS.map((level) => (
+                <option value={level} key={level}>
+                  {level}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="locationType">Location type</label>
+            <select
+              id="locationType"
+              name="locationType"
+              value={formData.locationType}
+              onChange={handleFieldChange}
+            >
+              {LOCATION_TYPES.map((type) => (
+                <option value={type} key={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className={styles.field}>
+          <label htmlFor="location">Location</label>
+          <input
+            id="location"
+            name="location"
+            type="text"
+            value={formData.location}
+            onChange={handleFieldChange}
+            placeholder="Example: Boston, MA"
+          />
+        </div>
+
+        <div className={styles.twoColumnFields}>
+          <div className={styles.field}>
+            <label htmlFor="weeklyCommitment">
+              Weekly commitment
+            </label>
+            <input
+              id="weeklyCommitment"
+              name="weeklyCommitment"
+              type="text"
+              value={formData.weeklyCommitment}
+              onChange={handleFieldChange}
+              placeholder="Example: 4–7 hours"
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="duration">Expected duration</label>
+            <input
+              id="duration"
+              name="duration"
+              type="text"
+              value={formData.duration}
+              onChange={handleFieldChange}
+              placeholder="Example: 1–3 months"
+            />
+          </div>
+        </div>
+
+        <div className={styles.twoColumnFields}>
+          <div className={styles.field}>
+            <label htmlFor="compensation">Compensation</label>
+            <input
+              id="compensation"
+              name="compensation"
+              type="text"
+              value={formData.compensation}
+              onChange={handleFieldChange}
+              placeholder="Example: Unpaid"
+            />
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="status">Initial status</label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={handleFieldChange}
+            >
+              {PROJECT_STATUSES.map((status) => (
+                <option value={status} key={status}>
+                  {status}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <div className={styles.formActions}>
+        <button
+          className={styles.submitButton}
+          type="submit"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? "Creating project..." : submitLabel}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+ProjectForm.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  isSubmitting: PropTypes.bool,
+  submitLabel: PropTypes.string,
+};
+
+export default ProjectForm;
