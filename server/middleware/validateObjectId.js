@@ -7,7 +7,7 @@ export function validateObjectId(request, response, next) {
     return response.status(400).json({
       success: false,
       data: null,
-      message: "The provided project ID is invalid.",
+      message: "The provided ID is invalid.",
     });
   }
 

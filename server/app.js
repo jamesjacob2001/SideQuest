@@ -1,13 +1,17 @@
 import express from "express";
 
 import { getDatabase } from "./config/database.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import projectRoutes from "./routes/projectRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
 app.use(express.json());
 
 app.use("/api/projects", projectRoutes);
+app.use("/api/users", userRoutes);
 
 app.get("/api/health", (request, response) => {
   response.json({
@@ -32,13 +36,7 @@ app.get("/api/health/database", async (request, response, next) => {
   }
 });
 
-app.use((error, request, response, next) => {
-  console.error(error);
-
-  response.status(500).json({
-    status: "error",
-    message: "An unexpected server error occurred.",
-  });
-});
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 export default app;

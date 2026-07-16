@@ -4,6 +4,71 @@ This document provides an overview of how the SideQuest repository is organized 
 
 ---
 
+# Running Locally
+
+## Prerequisites
+
+- Node.js and npm
+- A MongoDB Atlas cluster (or connection string from a teammate)
+- Your IP address allowed under Atlas **Network Access** (or `0.0.0.0/0` for development)
+
+## 1. Install dependencies
+
+From the project root:
+
+```bash
+npm install
+npm install --prefix client
+npm install --prefix server
+```
+
+## 2. Configure environment variables
+
+Copy the example env file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env`:
+
+```env
+MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@YOUR_CLUSTER.mongodb.net/?retryWrites=true&w=majority
+MONGODB_DB_NAME=sidequest
+PORT=3000
+SESSION_SECRET=replace-with-a-long-random-string
+```
+
+Never commit `.env`. Do not put real Mongo credentials in this README.
+
+If Atlas Network Access does not allow your IP, the server will fail to start with a TLS/SSL connection error.
+
+## 3. Start the app
+
+From the project root:
+
+```bash
+npm run dev
+```
+
+This starts the Express API and the Vite React client together.
+
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:5173 |
+| Backend API | http://localhost:3000 |
+| Health check | http://localhost:3000/api/health |
+| Database health | http://localhost:3000/api/health/database |
+
+### Run client or server alone
+
+```bash
+npm run client
+npm run server
+```
+
+---
+
 # Repository Overview
 
 ```text
