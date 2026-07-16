@@ -10,6 +10,7 @@
   "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
   "client": "npm run dev --prefix client",
   "server": "npm run dev --prefix server",
+  "rehash-passwords": "npm run rehash-passwords --prefix server",
   "format": "prettier --write ."
 },
   "repository": {

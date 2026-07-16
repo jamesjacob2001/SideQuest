@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "rehash-passwords": "node ../database/seed/rehashUserPasswords.js"
+    "rehash-passwords": "node scripts/rehashUserPasswords.js"
   },
   "keywords": [],
   "author": "",

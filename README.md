@@ -48,7 +48,7 @@ If Atlas Network Access does not allow your IP, the server will fail to start wi
 Imported seed users use bcrypt password hashes. After importing `data/users.json`, run once:
 
 ```bash
-node database/seed/rehashUserPasswords.js
+npm run rehash-passwords
 ```
 
 Then you can log in with any seeded user's email and password:
