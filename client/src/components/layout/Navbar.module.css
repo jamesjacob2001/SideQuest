@@ -34,3 +34,18 @@
 .links a:focus-visible {
   color: #ffffff;
 }
+
+.logoutButton {
+  padding: 0.4rem 0.75rem;
+  color: #dedff4;
+  background-color: transparent;
+  border: 1px solid #6669c5;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logoutButton:hover {
+  background-color: rgb(102 105 197 / 18%);
+}

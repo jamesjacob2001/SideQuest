@@ -30,6 +30,14 @@ export function getDatabase() {
   return database;
 }
 
+export function getMongoClient() {
+  if (!client) {
+    throw new Error("Database connection has not been established.");
+  }
+
+  return client;
+}
+
 export async function closeDatabaseConnection() {
   if (client) {
     await client.close();

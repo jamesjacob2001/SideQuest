@@ -1,16 +1,34 @@
 import { Router } from "express";
 
-import { listProjects, showProject, addProject, editProject, removeProject, } from "../controllers/projectController.js";
-
+import {
+  addProject,
+  editProject,
+  listProjects,
+  removeProject,
+  showProject,
+} from "../controllers/projectController.js";
+import { requireAuth } from "../middleware/requireAuth.js";
+import { requireProjectOwner } from "../middleware/requireProjectOwner.js";
 import { validateObjectId } from "../middleware/validateObjectId.js";
 
 const router = Router();
 
 router.get("/", listProjects);
 router.get("/:id", validateObjectId, showProject);
-router.post("/", addProject);
-router.patch("/:id", validateObjectId, editProject);
-router.delete("/:id", validateObjectId, removeProject);
+router.post("/", requireAuth, addProject);
+router.patch(
+  "/:id",
+  validateObjectId,
+  requireAuth,
+  requireProjectOwner,
+  editProject,
+);
+router.delete(
+  "/:id",
+  validateObjectId,
+  requireAuth,
+  requireProjectOwner,
+  removeProject,
+);
 
 export default router;
-

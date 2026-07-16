@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import {
   Link,
+  Navigate,
   useNavigate,
   useParams,
 } from "react-router-dom";
 
+import { useAuth } from "../components/auth/AuthContext.jsx";
 import ProjectForm from "../components/forms/ProjectForm.jsx";
 import {
   getProjectById,
@@ -15,6 +17,7 @@ import styles from "./EditProjectPage.module.css";
 function EditProjectPage() {
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
 
   const [project, setProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,6 +80,13 @@ function EditProjectPage() {
         </Link>
       </section>
     );
+  }
+
+  const isOwner =
+    currentUser?._id?.toString() === String(project.ownerId);
+
+  if (!isOwner) {
+    return <Navigate replace to={`/projects/${projectId}`} />;
   }
 
   return (

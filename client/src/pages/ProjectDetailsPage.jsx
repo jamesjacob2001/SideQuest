@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams, useNavigate, } from "react-router-dom";
 
+import { useAuth } from "../components/auth/AuthContext.jsx";
 import ProjectRoleCard from "../components/projects/ProjectRoleCard.jsx";
 import { getProjectById, deleteProject, } from "../services/projectApi.js";
 import styles from "./ProjectDetailsPage.module.css";
@@ -8,6 +9,7 @@ import styles from "./ProjectDetailsPage.module.css";
 function ProjectDetailsPage() {
   const { projectId } = useParams();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
 
   const [project, setProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -97,6 +99,8 @@ function ProjectDetailsPage() {
   } = project;
 
   const allCategories = [...categories, ...customCategories];
+  const isOwner =
+    currentUser?._id?.toString() === String(project.ownerId);
 
   return (
     <main className={styles.page}>
@@ -113,23 +117,26 @@ function ProjectDetailsPage() {
 
           <h1>{title}</h1>
           <p className={styles.tagline}>{tagline}</p>
-          <div className={styles.projectActions}>
-            <Link
-              className={styles.editLink}
-              to={`/projects/${projectId}/edit`}
-            >
-              Edit Project
-            </Link>
 
-            <button
-              className={styles.deleteButton}
-              type="button"
-              onClick={handleDeleteProject}
-              disabled={isDeleting}
-            >
-              {isDeleting ? "Deleting..." : "Delete Project"}
-            </button>
-          </div>
+          {isOwner ? (
+            <div className={styles.projectActions}>
+              <Link
+                className={styles.editLink}
+                to={`/projects/${projectId}/edit`}
+              >
+                Edit Project
+              </Link>
+
+              <button
+                className={styles.deleteButton}
+                type="button"
+                onClick={handleDeleteProject}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Delete Project"}
+              </button>
+            </div>
+          ) : null}
 
           {deleteError && (
             <div className={styles.deleteError} role="alert">

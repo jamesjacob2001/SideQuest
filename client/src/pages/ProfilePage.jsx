@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+import { useAuth } from "../components/auth/AuthContext.jsx";
 import DeleteAccountButton from "../components/profiles/DeleteAccountButton.jsx";
 import InterestsList from "../components/profiles/InterestsList.jsx";
 import PortfolioLinks from "../components/profiles/PortfolioLinks.jsx";
@@ -13,6 +14,7 @@ import styles from "./ProfilePage.module.css";
 
 function ProfilePage() {
   const { id } = useParams();
+  const { user: currentUser } = useAuth();
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
@@ -53,6 +55,8 @@ function ProfilePage() {
     return null;
   }
 
+  const isOwner = currentUser?._id?.toString() === String(user._id);
+
   return (
     <article className={styles.page}>
       <ProfileHeader
@@ -63,12 +67,17 @@ function ProfilePage() {
         username={user.username}
       />
 
-      <div className={styles.actions}>
-        <Link className={styles.editLink} to={`/profile/${id}/edit`}>
-          Edit profile
-        </Link>
-        <DeleteAccountButton userId={String(user._id)} userName={user.name} />
-      </div>
+      {isOwner ? (
+        <div className={styles.actions}>
+          <Link className={styles.editLink} to={`/profile/${id}/edit`}>
+            Edit profile
+          </Link>
+          <DeleteAccountButton
+            userId={String(user._id)}
+            userName={user.name}
+          />
+        </div>
+      ) : null}
 
       <div className={styles.sections}>
         <ProfileDetails

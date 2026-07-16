@@ -34,7 +34,7 @@ Edit `.env`:
 
 ```env
 MONGODB_URI=mongodb+srv://USERNAME:PASSWORD@YOUR_CLUSTER.mongodb.net/?retryWrites=true&w=majority
-MONGODB_DB_NAME=sidequest
+MONGODB_DB_NAME=sidequest_db
 PORT=3000
 SESSION_SECRET=replace-with-a-long-random-string
 ```
@@ -42,6 +42,20 @@ SESSION_SECRET=replace-with-a-long-random-string
 Never commit `.env`. Do not put real Mongo credentials in this README.
 
 If Atlas Network Access does not allow your IP, the server will fail to start with a TLS/SSL connection error.
+
+### Seeded user login (demo)
+
+Imported seed users use bcrypt password hashes. After importing `data/users.json`, run once:
+
+```bash
+node database/seed/rehashUserPasswords.js
+```
+
+Then you can log in with any seeded user's email and password:
+
+```text
+Password123!
+```
 
 ## 3. Start the app
 

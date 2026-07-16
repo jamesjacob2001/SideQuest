@@ -1,4 +1,6 @@
 import { Route, Routes } from "react-router-dom";
+
+import ProtectedRoute from "./components/auth/ProtectedRoute.jsx";
 import Navbar from "./components/layout/Navbar.jsx";
 import CreateProjectPage from "./pages/CreateProjectPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
@@ -21,14 +23,32 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
-          <Route path="/projects/new" element={<CreateProjectPage />} />
+          <Route
+            path="/projects/new"
+            element={
+              <ProtectedRoute>
+                <CreateProjectPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/projects/:projectId/edit"
-            element={<EditProjectPage />}
+            element={
+              <ProtectedRoute>
+                <EditProjectPage />
+              </ProtectedRoute>
+            }
           />
           <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/profile/:id/edit" element={<EditProfilePage />} />
+          <Route
+            path="/profile/:id/edit"
+            element={
+              <ProtectedRoute>
+                <EditProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />

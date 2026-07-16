@@ -51,12 +51,12 @@ export async function addProject(request, response, next) {
       });
     }
 
-    // Temporary until Passport authentication is integrated.
-    const temporaryOwnerId = "TEMP_OWNER";
+    // Owner comes from the authenticated Passport session user.
+    const ownerId = request.user._id;
 
     const projectDocument = buildProjectDocument(
       request.body,
-      temporaryOwnerId,
+      ownerId,
     );
 
     const createdProject = await createProject(projectDocument);

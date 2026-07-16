@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
+import { useAuth } from "../components/auth/AuthContext.jsx";
 import ProfileForm from "../components/forms/ProfileForm.jsx";
 import { getUserById, updateUser } from "../services/userApi.js";
 import styles from "./EditProfilePage.module.css";
@@ -8,11 +9,14 @@ import styles from "./EditProfilePage.module.css";
 function EditProfilePage() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
 
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const isOwner = currentUser?._id?.toString() === id;
 
   useEffect(() => {
     async function loadUser() {
@@ -38,6 +42,10 @@ function EditProfilePage() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (!isOwner) {
+    return <Navigate replace to={`/profile/${id}`} />;
   }
 
   if (isLoading) {

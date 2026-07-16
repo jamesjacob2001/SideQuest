@@ -2,11 +2,13 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../auth/AuthContext.jsx";
 import { deleteUser } from "../../services/userApi.js";
 import styles from "./DeleteAccountButton.module.css";
 
 function DeleteAccountButton({ userId, userName }) {
   const navigate = useNavigate();
+  const { clearAuth } = useAuth();
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -24,6 +26,7 @@ function DeleteAccountButton({ userId, userName }) {
 
     try {
       await deleteUser(userId);
+      clearAuth();
       navigate("/");
     } catch (error) {
       setErrorMessage(error.message);

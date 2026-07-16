@@ -136,7 +136,7 @@ export async function showUser(request, response, next) {
   }
 }
 
-// Temporary: unprotected until Passport ownership checks are added.
+// Ownership is enforced by requireAuth + requireSelf middleware.
 export async function editUser(request, response, next) {
   try {
     const existingUser = await findUserById(request.params.id);
@@ -216,7 +216,7 @@ export async function editUser(request, response, next) {
   }
 }
 
-// Temporary: unprotected until Passport ownership checks are added.
+// Ownership is enforced by requireAuth + requireSelf middleware.
 export async function removeUser(request, response, next) {
   try {
     const wasDeleted = await deleteUserAndRelatedData(request.params.id);
