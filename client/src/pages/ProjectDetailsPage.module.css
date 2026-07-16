@@ -181,3 +181,18 @@
     grid-template-columns: 1fr;
   }
 }
+
+.editLink {
+  display: inline-block;
+  margin-top: 1.25rem;
+  padding: 0.7rem 1rem;
+  color: #ffffff;
+  background-color: #6669c5;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.editLink:hover {
+  background-color: #7578d8;
+}

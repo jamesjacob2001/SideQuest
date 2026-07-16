@@ -89,6 +89,12 @@ function ProjectDetailsPage() {
 
           <h1>{title}</h1>
           <p className={styles.tagline}>{tagline}</p>
+          <Link
+            className={styles.editLink}
+            to={`/projects/${projectId}/edit`}
+          >
+            Edit Project
+          </Link>
         </div>
       </header>
 

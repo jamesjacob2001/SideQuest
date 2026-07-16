@@ -1,0 +1,60 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pageHeader h1,
+.message h1 {
+  margin: 0;
+  color: #f4f4f7;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.pageHeader > p:last-child {
+  max-width: 720px;
+  margin: 0.8rem 0 0;
+  color: #c6c7d0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.eyebrow {
+  margin: 0 0 0.6rem;
+  color: #adafff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.link {
+  width: fit-content;
+  color: #adafff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.message {
+  padding: 2rem;
+  text-align: center;
+  background-color: #22232f;
+  border: 1px solid #343645;
+  border-radius: 16px;
+}
+
+.message p {
+  color: #c6c7d0;
+}
+
+.message .link {
+  display: inline-block;
+  margin-top: 1rem;
+}

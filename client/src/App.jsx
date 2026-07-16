@@ -9,6 +9,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import ProjectDetailsPage from "./pages/ProjectDetailsPage.jsx";
 import ProjectsPage from "./pages/ProjectsPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
+import EditProjectPage from "./pages/EditProjectPage.jsx";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/projects/:projectId/edit" element={<EditProjectPage />} />
         </Routes>
       </main>
     </>

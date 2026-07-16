@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, } from "react";
 import PropTypes from "prop-types";
 
 import {
@@ -44,12 +44,67 @@ const initialFormData = {
   status: "Recruiting",
 };
 
+function buildInitialFormData(project) {
+  if (!project) {
+    return initialFormData;
+  }
+
+  const standardTechnologies = project.technologies?.filter(
+    (technology) => TECHNOLOGY_OPTIONS.includes(technology),
+  );
+
+  const customTechnologies = project.technologies?.filter(
+    (technology) => !TECHNOLOGY_OPTIONS.includes(technology),
+  );
+
+  return {
+    title: project.title ?? "",
+    tagline: project.tagline ?? "",
+    description: {
+      overview: project.description?.overview ?? "",
+      goals: project.description?.goals ?? "",
+      currentProgress:
+        project.description?.currentProgress ?? "",
+      lookingFor: project.description?.lookingFor ?? "",
+    },
+    categories: project.categories ?? [],
+    customCategory: project.customCategories?.[0] ?? "",
+    technologies: standardTechnologies ?? [],
+    customTechnology: customTechnologies?.[0] ?? "",
+    roles:
+      project.roles?.length > 0
+        ? project.roles.map((role) => ({
+            roleId: role.roleId,
+            title: role.title ?? "",
+            description: role.description ?? "",
+            requiredSkills: role.requiredSkills ?? [],
+            customSkill: "",
+            experienceLevel:
+              role.experienceLevel ?? "Open to All Levels",
+            totalPositions: role.totalPositions ?? 1,
+          }))
+        : [createEmptyRole()],
+    experienceLevel:
+      project.experienceLevel ?? "Open to All Levels",
+    locationType: project.locationType ?? "Remote",
+    location: project.location ?? "",
+    weeklyCommitment: project.weeklyCommitment ?? "",
+    duration: project.duration ?? "",
+    compensation: project.compensation?.type ?? "",
+    status: project.status ?? "Recruiting",
+  };
+}
+
 function ProjectForm({
+  initialData = null,
   onSubmit,
   isSubmitting = false,
   submitLabel = "Create Project",
+  errorTitle = "Project could not be saved",
 }) {
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState(() =>
+    buildInitialFormData(initialData),
+  );
   const [formError, setFormError] = useState("");
   const [validationErrors, setValidationErrors] = useState([]);
 
@@ -209,6 +264,9 @@ function ProjectForm({
         ? [...formData.technologies, customTechnology]
         : formData.technologies,
       roles: formData.roles.map((role) => ({
+        ...(role.roleId && {
+          roleId: role.roleId,
+        }),
         title: role.title.trim(),
         description: role.description.trim(),
         requiredSkills: role.requiredSkills,
@@ -251,7 +309,7 @@ function ProjectForm({
     <form className={styles.form} onSubmit={handleSubmit}>
       {formError && (
         <div className={styles.errorSummary} role="alert">
-          <h2>Project could not be created</h2>
+          <h2>{errorTitle}</h2>
           <p>{formError}</p>
 
           {validationErrors.length > 0 && (
@@ -732,9 +790,44 @@ function ProjectForm({
 }
 
 ProjectForm.propTypes = {
+  initialData: PropTypes.shape({
+    title: PropTypes.string,
+    tagline: PropTypes.string,
+    description: PropTypes.shape({
+      overview: PropTypes.string,
+      goals: PropTypes.string,
+      currentProgress: PropTypes.string,
+      lookingFor: PropTypes.string,
+    }),
+    categories: PropTypes.arrayOf(PropTypes.string),
+    customCategories: PropTypes.arrayOf(PropTypes.string),
+    technologies: PropTypes.arrayOf(PropTypes.string),
+    roles: PropTypes.arrayOf(
+      PropTypes.shape({
+        roleId: PropTypes.string,
+        title: PropTypes.string,
+        description: PropTypes.string,
+        requiredSkills: PropTypes.arrayOf(PropTypes.string),
+        experienceLevel: PropTypes.string,
+        totalPositions: PropTypes.number,
+      }),
+    ),
+    experienceLevel: PropTypes.string,
+    locationType: PropTypes.string,
+    location: PropTypes.string,
+    weeklyCommitment: PropTypes.string,
+    duration: PropTypes.string,
+    compensation: PropTypes.shape({
+      type: PropTypes.string,
+      amount: PropTypes.number,
+      currency: PropTypes.string,
+    }),
+    status: PropTypes.string,
+  }),
   onSubmit: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool,
   submitLabel: PropTypes.string,
+  errorTitle: PropTypes.string,
 };
 
 export default ProjectForm;
