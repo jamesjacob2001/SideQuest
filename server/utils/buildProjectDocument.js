@@ -8,6 +8,16 @@ function normalizeStringArray(values) {
   return values.map((value) => value.trim());
 }
 
+function hasOwnProperty(object, property) {
+  return Object.prototype.hasOwnProperty.call(object, property);
+}
+
+function selectUpdatedValue(existingProject, projectUpdates, field) {
+  return hasOwnProperty(projectUpdates, field)
+    ? projectUpdates[field]
+    : existingProject[field];
+}
+
 export function buildProjectDocument(projectData, ownerId) {
   const roles = projectData.roles.map((role) => ({
     roleId: generateRoleId(),
@@ -52,5 +62,151 @@ export function buildProjectDocument(projectData, ownerId) {
     compensation: projectData.compensation ?? null,
     status: projectData.status,
     createdAt: new Date(),
+  };
+}
+
+
+export function buildUpdatedProjectDocument(
+  existingProject,
+  projectUpdates,
+) {
+  const descriptionUpdates = projectUpdates.description ?? {};
+
+  const description = {
+    overview: normalizeString(
+      hasOwnProperty(descriptionUpdates, "overview")
+        ? descriptionUpdates.overview
+        : existingProject.description.overview,
+    ),
+    goals: normalizeString(
+      hasOwnProperty(descriptionUpdates, "goals")
+        ? descriptionUpdates.goals
+        : existingProject.description.goals,
+    ),
+    currentProgress: normalizeString(
+      hasOwnProperty(descriptionUpdates, "currentProgress")
+        ? descriptionUpdates.currentProgress
+        : existingProject.description.currentProgress,
+    ),
+    lookingFor: normalizeString(
+      hasOwnProperty(descriptionUpdates, "lookingFor")
+        ? descriptionUpdates.lookingFor
+        : existingProject.description.lookingFor,
+    ),
+  };
+
+  const roles = hasOwnProperty(projectUpdates, "roles")
+    ? projectUpdates.roles.map((role) => {
+        const existingRole = role.roleId
+          ? existingProject.roles.find(
+              (currentRole) => currentRole.roleId === role.roleId,
+            )
+          : null;
+
+        return {
+          roleId: existingRole?.roleId ?? generateRoleId(),
+          title: normalizeString(role.title),
+          description: role.description
+            ? normalizeString(role.description)
+            : null,
+          requiredSkills: normalizeStringArray(role.requiredSkills),
+          experienceLevel: role.experienceLevel,
+          totalPositions: role.totalPositions,
+        };
+      })
+    : existingProject.roles;
+
+  const categories = selectUpdatedValue(
+    existingProject,
+    projectUpdates,
+    "categories",
+  );
+
+  const customCategories = selectUpdatedValue(
+    existingProject,
+    projectUpdates,
+    "customCategories",
+  );
+
+  const technologies = selectUpdatedValue(
+    existingProject,
+    projectUpdates,
+    "technologies",
+  );
+
+  const location = selectUpdatedValue(
+    existingProject,
+    projectUpdates,
+    "location",
+  );
+
+  const weeklyCommitment = selectUpdatedValue(
+    existingProject,
+    projectUpdates,
+    "weeklyCommitment",
+  );
+
+  const duration = selectUpdatedValue(
+    existingProject,
+    projectUpdates,
+    "duration",
+  );
+
+  return {
+    ownerId: existingProject.ownerId,
+
+    title: normalizeString(
+      selectUpdatedValue(existingProject, projectUpdates, "title"),
+    ),
+
+    tagline: normalizeString(
+      selectUpdatedValue(existingProject, projectUpdates, "tagline"),
+    ),
+
+    description,
+
+    categories: normalizeStringArray(categories),
+
+    customCategories: customCategories
+      ? normalizeStringArray(customCategories)
+      : [],
+
+    technologies: normalizeStringArray(technologies),
+
+    roles,
+
+    experienceLevel: selectUpdatedValue(
+      existingProject,
+      projectUpdates,
+      "experienceLevel",
+    ),
+
+    locationType: selectUpdatedValue(
+      existingProject,
+      projectUpdates,
+      "locationType",
+    ),
+
+    location: location ? normalizeString(location) : null,
+
+    weeklyCommitment: weeklyCommitment
+      ? normalizeString(weeklyCommitment)
+      : null,
+
+    duration: duration ? normalizeString(duration) : null,
+
+    compensation: selectUpdatedValue(
+      existingProject,
+      projectUpdates,
+      "compensation",
+    ),
+
+    status: selectUpdatedValue(
+      existingProject,
+      projectUpdates,
+      "status",
+    ),
+
+    createdAt: existingProject.createdAt,
   };
 }

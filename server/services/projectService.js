@@ -38,3 +38,28 @@ export async function createProject(projectDocument) {
     _id: result.insertedId,
   };
 }
+
+export async function updateProjectById(
+  projectId,
+  projectDocument,
+) {
+  const database = getDatabase();
+  const objectId = new ObjectId(projectId);
+
+  const result = await database.collection("projects").updateOne(
+    {
+      _id: objectId,
+    },
+    {
+      $set: projectDocument,
+    },
+  );
+
+  if (result.matchedCount === 0) {
+    return null;
+  }
+
+  return database.collection("projects").findOne({
+    _id: objectId,
+  });
+}
