@@ -3,17 +3,38 @@ import { useEffect, useState } from "react";
 import ProjectGrid from "../components/projects/ProjectGrid.jsx";
 import { getProjects } from "../services/projectApi.js";
 import styles from "./ProjectsPage.module.css";
+import ProjectPagination from "../components/projects/ProjectPagination.jsx";
+
+
+const PROJECTS_PER_PAGE = 24;
 
 function ProjectsPage() {
   const [projects, setProjects] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: PROJECTS_PER_PAGE,
+    totalProjects: 0,
+    totalPages: 1,
+    hasPreviousPage: false,
+    hasNextPage: false,
+  });
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     async function loadProjects() {
+      setIsLoading(true);
+      setErrorMessage("");
+
       try {
-        const projectData = await getProjects();
-        setProjects(projectData);
+        const projectData = await getProjects(
+          currentPage,
+          PROJECTS_PER_PAGE,
+        );
+
+        setProjects(projectData.projects);
+        setPagination(projectData.pagination);
       } catch (error) {
         setErrorMessage(error.message);
       } finally {
@@ -22,7 +43,23 @@ function ProjectsPage() {
     }
 
     loadProjects();
-  }, []);
+  }, [currentPage]);
+
+  function handlePageChange(nextPage) {
+    if (
+      nextPage < 1 ||
+      nextPage > pagination.totalPages ||
+      nextPage === currentPage
+    ) {
+      return;
+    }
+
+    setCurrentPage(nextPage);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }
 
   let pageContent;
 
@@ -47,7 +84,19 @@ function ProjectsPage() {
       </div>
     );
   } else {
-    pageContent = <ProjectGrid projects={projects} />;
+    pageContent = (
+      <>
+        <ProjectGrid projects={projects} />
+
+        <ProjectPagination
+          page={pagination.page}
+          totalPages={pagination.totalPages}
+          hasPreviousPage={pagination.hasPreviousPage}
+          hasNextPage={pagination.hasNextPage}
+          onPageChange={handlePageChange}
+        />
+      </>
+    );
   }
 
   return (
@@ -64,8 +113,10 @@ function ProjectsPage() {
 
         {!isLoading && !errorMessage && projects.length > 0 && (
           <p className={styles.projectCount}>
-            {projects.length}{" "}
-            {projects.length === 1 ? "project" : "projects"}
+            {pagination.totalProjects}{" "}
+            {pagination.totalProjects === 1
+              ? "project"
+              : "projects"}
           </p>
         )}
       </header>

@@ -4,15 +4,51 @@ import { validateProject } from "../utils/validators/projectValidator.js";
 
 export async function listProjects(request, response, next) {
   try {
-    const projects = await getPublicProjects();
+    const requestedPage = Number.parseInt(
+      request.query.page,
+      10,
+    );
 
-    response.status(200).json({
+    const requestedLimit = Number.parseInt(
+      request.query.limit,
+      10,
+    );
+
+    const page =
+      Number.isInteger(requestedPage) && requestedPage > 0
+        ? requestedPage
+        : 1;
+
+    const limit =
+      Number.isInteger(requestedLimit) && requestedLimit > 0
+        ? Math.min(requestedLimit, 100)
+        : 24;
+
+    const { projects, totalProjects } =
+      await getPublicProjects(page, limit);
+
+    const totalPages = Math.max(
+      1,
+      Math.ceil(totalProjects / limit),
+    );
+
+    return response.status(200).json({
       success: true,
-      data: projects,
+      data: {
+        projects,
+        pagination: {
+          page,
+          limit,
+          totalProjects,
+          totalPages,
+          hasPreviousPage: page > 1,
+          hasNextPage: page < totalPages,
+        },
+      },
       message: "Projects retrieved successfully.",
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 }
 

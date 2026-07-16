@@ -2,20 +2,35 @@ import { ObjectId } from "mongodb";
 
 import { getDatabase } from "../config/database.js";
 
-export async function getPublicProjects() {
+export async function getPublicProjects(page, limit) {
   const database = getDatabase();
+  const projectsCollection = database.collection("projects");
 
-  return database
-    .collection("projects")
-    .find({
-      status: {
-        $ne: "Completed",
-      },
-    })
-    .sort({
-      createdAt: -1,
-    })
-    .toArray();
+  const filter = {
+    status: {
+      $ne: "Completed",
+    },
+  };
+
+  const skip = (page - 1) * limit;
+
+  const [projects, totalProjects] = await Promise.all([
+    projectsCollection
+      .find(filter)
+      .sort({
+        createdAt: -1,
+      })
+      .skip(skip)
+      .limit(limit)
+      .toArray(),
+
+    projectsCollection.countDocuments(filter),
+  ]);
+
+  return {
+    projects,
+    totalProjects,
+  };
 }
 
 export async function getProjectById(projectId) {
