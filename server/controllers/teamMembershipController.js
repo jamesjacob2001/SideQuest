@@ -3,9 +3,12 @@ import { ObjectId } from "mongodb";
 import { getProjectById } from "../services/projectService.js";
 import {
   createTeamMembership,
+  deletePendingTeamMembership,
   findExistingApplication,
   getApplicantMembershipsWithProjects,
   getProjectMembershipsWithApplicants,
+  getTeamMembershipById,
+  updateTeamMembershipStatus,
 } from "../services/teamMembershipService.js";
 
 export async function addTeamMembership(
@@ -197,3 +200,115 @@ export async function listProjectTeamMemberships(
     return next(error);
   }
 }
+
+export async function updateMembershipStatus(
+  request,
+  response,
+  next,
+) {
+  try {
+    const { membershipId } = request.params;
+    const { status } = request.body;
+
+    if (!ObjectId.isValid(membershipId)) {
+      return response.status(400).json({
+        success: false,
+        message: "Invalid membership ID.",
+      });
+    }
+
+    if (
+      status !== "accepted" &&
+      status !== "rejected"
+    ) {
+      return response.status(400).json({
+        success: false,
+        message:
+          "Status must be accepted or rejected.",
+      });
+    }
+
+    const membership =
+      await getTeamMembershipById(membershipId);
+
+    if (!membership) {
+      return response.status(404).json({
+        success: false,
+        message: "Membership not found.",
+      });
+    }
+
+    const project = await getProjectById(
+      membership.projectId.toString(),
+    );
+
+    if (
+      project.ownerId.toString() !==
+      request.user._id.toString()
+    ) {
+      return response.status(403).json({
+        success: false,
+        message:
+          "Only the project owner may update applications.",
+      });
+    }
+
+    const updatedMembership =
+      await updateTeamMembershipStatus(
+        membershipId,
+        status,
+      );
+
+    if (!updatedMembership) {
+      return response.status(409).json({
+        success: false,
+        message:
+          "Only pending applications may be updated.",
+      });
+    }
+
+    return response.status(200).json({
+      success: true,
+      data: updatedMembership,
+      message: "Application updated.",
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function withdrawMembership(
+  request,
+  response,
+  next,
+) {
+  try {
+    const { membershipId } = request.params;
+
+    if (!ObjectId.isValid(membershipId)) {
+      return response.status(400).json({
+        success: false,
+        message: "Invalid membership ID.",
+      });
+    }
+
+    const deleted =
+      await deletePendingTeamMembership(
+        membershipId,
+        request.user._id,
+      );
+
+    if (!deleted) {
+      return response.status(404).json({
+        success: false,
+        message:
+          "Pending application not found.",
+      });
+    }
+
+    return response.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+
