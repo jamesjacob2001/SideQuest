@@ -7,9 +7,7 @@
 
 ## Class Link
 
-<!-- Replace with your course / Canvas / syllabus URL before submission -->
-
-**TODO:** Add your class link here (e.g. Canvas course home page).
+[**TODO:** Add your class link here (e.g. Canvas course home page).](https://johnguerra.co/classes/webDevelopment_online_summer_2026/)
 
 ## Project Objective
 
