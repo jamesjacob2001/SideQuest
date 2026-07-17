@@ -15,6 +15,12 @@ SideQuest helps students discover side projects, find collaborators across field
 
 Authentication uses Passport Local with Express sessions stored in MongoDB. Data lives in MongoDB Atlas (`users`, `projects`, `team_memberships`).
 
+## Live App
+
+Public deployment: [https://sidequest-green.vercel.app/](https://sidequest-green.vercel.app/)
+
+Frontend is hosted on Vercel; the API is hosted on Railway.
+
 ## Screenshot
 
 Add a screenshot of the running app at [`docs/screenshot.png`](docs/screenshot.png), then uncomment the image below:
@@ -25,7 +31,7 @@ Add a screenshot of the running app at [`docs/screenshot.png`](docs/screenshot.p
 
 ## How to Use the App
 
-1. Open the frontend (local: http://localhost:5173).
+1. Open the app at [https://sidequest-green.vercel.app/](https://sidequest-green.vercel.app/) (or locally at http://localhost:5173).
 2. **Browse Projects** to explore public projects (no login required).
 3. **Sign Up** or **Log In** (seeded demo password: `Password123!`).
 4. Edit **My Profile**, **Create Project**, apply to roles, and manage requests on **Dashboard**.
