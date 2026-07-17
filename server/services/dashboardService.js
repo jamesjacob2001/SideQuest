@@ -1,12 +1,41 @@
+import { ObjectId } from "mongodb";
+
+import { getDatabase } from "../config/database.js";
 import {
   getApplicantMembershipsWithProjects,
   getIncomingMembershipsForOwner,
 } from "./teamMembershipService.js";
 
+function summarizeOwnedProject(project) {
+  return {
+    _id: project._id,
+    title: project.title,
+    tagline: project.tagline,
+    status: project.status,
+    locationType: project.locationType,
+    createdAt: project.createdAt,
+  };
+}
+
+async function getOwnedProjects(userId) {
+  const projects = await getDatabase()
+    .collection("projects")
+    .find({
+      ownerId: new ObjectId(userId),
+    })
+    .sort({
+      createdAt: -1,
+    })
+    .toArray();
+
+  return projects.map(summarizeOwnedProject);
+}
+
 export async function getUserDashboard(userId) {
-  const [myMemberships, pendingIncoming] = await Promise.all([
+  const [myMemberships, pendingIncoming, owned] = await Promise.all([
     getApplicantMembershipsWithProjects(userId),
     getIncomingMembershipsForOwner(userId),
+    getOwnedProjects(userId),
   ]);
 
   const joined = myMemberships.filter(
@@ -21,5 +50,10 @@ export async function getUserDashboard(userId) {
     joined,
     pendingOutgoing,
     pendingIncoming,
+    owned,
+    recruiting: owned.filter((project) => project.status === "Recruiting"),
+    active: owned.filter((project) => project.status === "Active"),
+    paused: owned.filter((project) => project.status === "Paused"),
+    completed: owned.filter((project) => project.status === "Completed"),
   };
 }

@@ -2,16 +2,24 @@ import { useEffect, useState } from "react";
 
 import DashboardSection from "../components/dashboard/DashboardSection.jsx";
 import MembershipListItem from "../components/dashboard/MembershipListItem.jsx";
+import OwnedProjectListItem from "../components/dashboard/OwnedProjectListItem.jsx";
 import { getDashboard } from "../services/dashboardApi.js";
 import { updateMembershipStatus } from "../services/membershipApi.js";
 import styles from "./DashboardPage.module.css";
 
+const EMPTY_DASHBOARD = {
+  joined: [],
+  pendingOutgoing: [],
+  pendingIncoming: [],
+  owned: [],
+  recruiting: [],
+  active: [],
+  paused: [],
+  completed: [],
+};
+
 function DashboardPage() {
-  const [dashboard, setDashboard] = useState({
-    joined: [],
-    pendingOutgoing: [],
-    pendingIncoming: [],
-  });
+  const [dashboard, setDashboard] = useState(EMPTY_DASHBOARD);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [updatingId, setUpdatingId] = useState(null);
@@ -25,6 +33,11 @@ function DashboardPage() {
           joined: data.joined ?? [],
           pendingOutgoing: data.pendingOutgoing ?? [],
           pendingIncoming: data.pendingIncoming ?? [],
+          owned: data.owned ?? [],
+          recruiting: data.recruiting ?? [],
+          active: data.active ?? [],
+          paused: data.paused ?? [],
+          completed: data.completed ?? [],
         });
       } catch (error) {
         setErrorMessage(error.message);
@@ -80,7 +93,16 @@ function DashboardPage() {
     );
   }
 
-  const { joined, pendingOutgoing, pendingIncoming } = dashboard;
+  const {
+    joined,
+    pendingOutgoing,
+    pendingIncoming,
+    owned,
+    recruiting,
+    active,
+    paused,
+    completed,
+  } = dashboard;
 
   return (
     <section className={styles.page}>
@@ -89,12 +111,97 @@ function DashboardPage() {
           <p className={styles.eyebrow}>Your workspace</p>
           <h1>Dashboard</h1>
           <p className={styles.introduction}>
-            Track projects you have joined and membership requests.
+            Manage projects you created, track memberships, and review join
+            requests.
           </p>
         </div>
       </header>
 
       <div className={styles.sections}>
+        <DashboardSection
+          description="All projects you own."
+          emptyMessage="You have not created any projects yet."
+          isEmpty={owned.length === 0}
+          title="Projects you created"
+        >
+          <ul className={styles.list}>
+            {owned.map((project) => (
+              <OwnedProjectListItem
+                key={String(project._id)}
+                project={project}
+                showManageActions
+              />
+            ))}
+          </ul>
+        </DashboardSection>
+
+        <DashboardSection
+          description="Owned projects still looking for teammates. Edit to update roles or status."
+          emptyMessage="You have no recruiting projects."
+          isEmpty={recruiting.length === 0}
+          title="Recruiting"
+        >
+          <ul className={styles.list}>
+            {recruiting.map((project) => (
+              <OwnedProjectListItem
+                key={String(project._id)}
+                project={project}
+                showManageActions
+              />
+            ))}
+          </ul>
+        </DashboardSection>
+
+        <DashboardSection
+          description="Owned projects currently in progress."
+          emptyMessage="You have no active projects."
+          isEmpty={active.length === 0}
+          title="Active"
+        >
+          <ul className={styles.list}>
+            {active.map((project) => (
+              <OwnedProjectListItem
+                key={String(project._id)}
+                project={project}
+                showManageActions
+              />
+            ))}
+          </ul>
+        </DashboardSection>
+
+        <DashboardSection
+          description="Owned projects that are paused."
+          emptyMessage="You have no paused projects."
+          isEmpty={paused.length === 0}
+          title="Paused"
+        >
+          <ul className={styles.list}>
+            {paused.map((project) => (
+              <OwnedProjectListItem
+                key={String(project._id)}
+                project={project}
+                showManageActions
+              />
+            ))}
+          </ul>
+        </DashboardSection>
+
+        <DashboardSection
+          description="Owned projects marked completed."
+          emptyMessage="You have no completed projects."
+          isEmpty={completed.length === 0}
+          title="Completed"
+        >
+          <ul className={styles.list}>
+            {completed.map((project) => (
+              <OwnedProjectListItem
+                key={String(project._id)}
+                project={project}
+              />
+            ))}
+          </ul>
+        </DashboardSection>
+
         <DashboardSection
           description="Projects where you are an accepted team member."
           emptyMessage="You have not joined any projects yet."
@@ -155,20 +262,6 @@ function DashboardPage() {
             })}
           </ul>
         </DashboardSection>
-
-        <DashboardSection
-          description="Owned project lists will appear here."
-          emptyMessage="Project sections are coming from the projects teammate."
-          isEmpty
-          title="Projects you created"
-        />
-
-        <DashboardSection
-          description="Manage recruiting, active, and completed owned projects."
-          emptyMessage="Recruiting / Active / Completed sections are coming from the projects teammate."
-          isEmpty
-          title="Project status"
-        />
       </div>
     </section>
   );
