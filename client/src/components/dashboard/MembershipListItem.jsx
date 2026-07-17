@@ -4,10 +4,18 @@ import { Link } from "react-router-dom";
 import { buildProfileAvatarUrl } from "../profiles/buildProfileAvatarUrl.js";
 import styles from "./MembershipListItem.module.css";
 
-function MembershipListItem({ membership, showApplicant }) {
+function MembershipListItem({
+  membership,
+  showApplicant,
+  onAccept,
+  onReject,
+  isUpdating,
+  actionError,
+}) {
   const project = membership.project;
   const applicant = membership.applicant;
   const projectId = project?._id;
+  const showActions = Boolean(onAccept && onReject);
 
   if (!projectId) {
     return null;
@@ -33,21 +41,50 @@ function MembershipListItem({ membership, showApplicant }) {
             <span className={styles.status}>{membership.status}</span>
           ) : null}
         </div>
+
+        {actionError ? (
+          <p className={styles.actionError} role="alert">
+            {actionError}
+          </p>
+        ) : null}
       </div>
 
-      {showApplicant && applicant?._id && applicant?.name ? (
-        <Link
-          className={styles.applicant}
-          to={`/profile/${applicant._id}`}
-        >
-          <img
-            alt={`${applicant.name} avatar`}
-            className={styles.avatar}
-            src={buildProfileAvatarUrl(applicant.name)}
-          />
-          <span>{applicant.name}</span>
-        </Link>
-      ) : null}
+      <div className={styles.side}>
+        {showApplicant && applicant?._id && applicant?.name ? (
+          <Link
+            className={styles.applicant}
+            to={`/profile/${applicant._id}`}
+          >
+            <img
+              alt={`${applicant.name} avatar`}
+              className={styles.avatar}
+              src={buildProfileAvatarUrl(applicant.name)}
+            />
+            <span>{applicant.name}</span>
+          </Link>
+        ) : null}
+
+        {showActions ? (
+          <div className={styles.actions}>
+            <button
+              className={styles.acceptButton}
+              disabled={isUpdating}
+              onClick={onAccept}
+              type="button"
+            >
+              {isUpdating ? "Saving..." : "Accept"}
+            </button>
+            <button
+              className={styles.rejectButton}
+              disabled={isUpdating}
+              onClick={onReject}
+              type="button"
+            >
+              Decline
+            </button>
+          </div>
+        ) : null}
+      </div>
     </li>
   );
 }
@@ -68,6 +105,10 @@ MembershipListItem.propTypes = {
     }),
   }).isRequired,
   showApplicant: PropTypes.bool,
+  onAccept: PropTypes.func,
+  onReject: PropTypes.func,
+  isUpdating: PropTypes.bool,
+  actionError: PropTypes.string,
 };
 
 export default MembershipListItem;

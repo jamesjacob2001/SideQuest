@@ -77,3 +77,57 @@
   border: 1px solid #454756;
   background-color: #1d1e28;
 }
+
+.side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.acceptButton,
+.rejectButton {
+  padding: 0.45rem 0.8rem;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.acceptButton {
+  color: #ffffff;
+  background-color: #6669c5;
+  border: 0;
+}
+
+.acceptButton:hover {
+  background-color: #7578d8;
+}
+
+.rejectButton {
+  color: #dedff4;
+  background-color: transparent;
+  border: 1px solid #6669c5;
+}
+
+.rejectButton:hover {
+  background-color: rgb(102 105 197 / 18%);
+}
+
+.acceptButton:disabled,
+.rejectButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.actionError {
+  margin: 0.35rem 0 0;
+  color: #ffd4d8;
+  font-size: 0.85rem;
+}

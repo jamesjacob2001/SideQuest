@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import DashboardSection from "../components/dashboard/DashboardSection.jsx";
 import MembershipListItem from "../components/dashboard/MembershipListItem.jsx";
 import { getDashboard } from "../services/dashboardApi.js";
+import { updateMembershipStatus } from "../services/membershipApi.js";
 import styles from "./DashboardPage.module.css";
 
 function DashboardPage() {
@@ -13,6 +14,8 @@ function DashboardPage() {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [updatingId, setUpdatingId] = useState(null);
+  const [actionErrors, setActionErrors] = useState({});
 
   useEffect(() => {
     async function loadDashboard() {
@@ -32,6 +35,33 @@ function DashboardPage() {
 
     loadDashboard();
   }, []);
+
+  async function handleIncomingDecision(membershipId, status) {
+    const id = String(membershipId);
+    setUpdatingId(id);
+    setActionErrors((current) => {
+      const next = { ...current };
+      delete next[id];
+      return next;
+    });
+
+    try {
+      await updateMembershipStatus(id, status);
+      setDashboard((current) => ({
+        ...current,
+        pendingIncoming: current.pendingIncoming.filter(
+          (membership) => String(membership._id) !== id,
+        ),
+      }));
+    } catch (error) {
+      setActionErrors((current) => ({
+        ...current,
+        [id]: error.message,
+      }));
+    } finally {
+      setUpdatingId(null);
+    }
+  }
 
   if (isLoading) {
     return (
@@ -104,13 +134,25 @@ function DashboardPage() {
           title="Incoming requests"
         >
           <ul className={styles.list}>
-            {pendingIncoming.map((membership) => (
-              <MembershipListItem
-                key={String(membership._id)}
-                membership={membership}
-                showApplicant
-              />
-            ))}
+            {pendingIncoming.map((membership) => {
+              const membershipId = String(membership._id);
+
+              return (
+                <MembershipListItem
+                  key={membershipId}
+                  actionError={actionErrors[membershipId]}
+                  isUpdating={updatingId === membershipId}
+                  membership={membership}
+                  onAccept={() =>
+                    handleIncomingDecision(membershipId, "accepted")
+                  }
+                  onReject={() =>
+                    handleIncomingDecision(membershipId, "rejected")
+                  }
+                  showApplicant
+                />
+              );
+            })}
           </ul>
         </DashboardSection>
 
