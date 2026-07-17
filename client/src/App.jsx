@@ -40,7 +40,14 @@ function App() {
             }
           />
           <Route path="/projects/:projectId" element={<ProjectDetailsPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/profile/:id/edit"
             element={

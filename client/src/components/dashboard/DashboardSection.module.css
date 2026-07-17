@@ -1,0 +1,27 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #22232f;
+  border: 1px solid #343645;
+  border-radius: 16px;
+}
+
+.header h2 {
+  margin: 0;
+  color: #f4f4f7;
+  font-size: 1.25rem;
+}
+
+.description {
+  margin: 0.45rem 0 0;
+  color: #c6c7d0;
+  line-height: 1.5;
+}
+
+.empty {
+  margin: 0;
+  color: #a8a9b5;
+  line-height: 1.5;
+}

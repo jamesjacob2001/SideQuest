@@ -1,0 +1,62 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.pageHeader h1 {
+  margin: 0;
+  color: #f4f4f7;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.eyebrow {
+  margin: 0 0 0.6rem;
+  color: #adafff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.introduction {
+  max-width: 700px;
+  margin: 0.8rem 0 0;
+  color: #c6c7d0;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.message,
+.errorMessage {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background-color: #22232f;
+  border: 1px solid #343645;
+  border-radius: 16px;
+}
+
+.errorMessage {
+  border-color: #a64f5b;
+}
+
+.errorMessage h1 {
+  margin-top: 0;
+}
+
+.errorMessage p {
+  margin-bottom: 0;
+  color: #c6c7d0;
+}
