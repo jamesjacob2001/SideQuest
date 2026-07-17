@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
-import { useAuth } from "../components/auth/AuthContext.jsx";
+import { useAuth } from "../components/auth/useAuth.js";
 import ProfileForm from "../components/forms/ProfileForm.jsx";
 import { getUserById, updateUser } from "../services/userApi.js";
 import styles from "./EditProfilePage.module.css";

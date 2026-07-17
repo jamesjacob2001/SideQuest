@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Navigate, useLocation } from "react-router-dom";
 
-import { useAuth } from "./AuthContext.jsx";
+import { useAuth } from "./useAuth.js";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAuth();

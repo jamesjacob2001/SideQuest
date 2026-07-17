@@ -6,7 +6,7 @@ import {
   useParams,
 } from "react-router-dom";
 
-import { useAuth } from "../components/auth/AuthContext.jsx";
+import { useAuth } from "../components/auth/useAuth.js";
 import ProjectForm from "../components/forms/ProjectForm.jsx";
 import {
   getProjectById,

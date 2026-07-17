@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { useAuth } from "../components/auth/AuthContext.jsx";
+import { useAuth } from "../components/auth/useAuth.js";
 import styles from "./AuthPages.module.css";
 
 function LoginPage() {

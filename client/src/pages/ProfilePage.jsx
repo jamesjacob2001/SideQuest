@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import { useAuth } from "../components/auth/AuthContext.jsx";
+import { useAuth } from "../components/auth/useAuth.js";
 import DeleteAccountButton from "../components/profiles/DeleteAccountButton.jsx";
 import InterestsList from "../components/profiles/InterestsList.jsx";
 import PortfolioLinks from "../components/profiles/PortfolioLinks.jsx";

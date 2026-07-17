@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "../auth/AuthContext.jsx";
+import { useAuth } from "../auth/useAuth.js";
 import { deleteUser } from "../../services/userApi.js";
 import styles from "./DeleteAccountButton.module.css";
 
