@@ -26,6 +26,30 @@ const passport = configurePassport();
 
 app.set("passport", passport);
 
+if (process.env.NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
+
+app.use((request, response, next) => {
+  const origin = process.env.CLIENT_ORIGIN;
+
+  if (origin) {
+    response.setHeader("Access-Control-Allow-Origin", origin);
+    response.setHeader("Access-Control-Allow-Credentials", "true");
+    response.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    response.setHeader(
+      "Access-Control-Allow-Methods",
+      "GET,POST,PATCH,DELETE,OPTIONS",
+    );
+  }
+
+  if (request.method === "OPTIONS") {
+    return response.sendStatus(204);
+  }
+
+  return next();
+});
+
 app.use(express.json());
 app.use(createSessionMiddleware());
 app.use(passport.initialize());

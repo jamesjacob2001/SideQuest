@@ -14,6 +14,8 @@ export function createSessionMiddleware() {
     throw new Error("MONGODB_URI is not defined.");
   }
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   return session({
     secret,
     resave: false,
@@ -26,8 +28,8 @@ export function createSessionMiddleware() {
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true,
-      sameSite: "lax",
-      secure: false,
+      sameSite: isProduction ? "none" : "lax",
+      secure: isProduction,
     },
   });
 }
