@@ -10,6 +10,7 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import { notFoundHandler } from "./middleware/notFoundHandler.js";
 import authRoutes from "./routes/authRoutes.js";
 import projectRoutes from "./routes/projectRoutes.js";
+import teamMembershipRoutes from "./routes/teamMembershipRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 
 const currentFilePath = fileURLToPath(import.meta.url);
@@ -32,6 +33,7 @@ app.use(passport.session());
 app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/team-memberships", teamMembershipRoutes);
 
 app.get("/api/health", (request, response) => {
   response.json({
