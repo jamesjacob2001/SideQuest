@@ -5,10 +5,7 @@ import ProjectOwner from "./ProjectOwner.jsx";
 import styles from "./ProjectCard.module.css";
 
 function calculateTotalPositions(roles) {
-  return roles.reduce(
-    (total, role) => total + (role.totalPositions ?? 0),
-    0,
-  );
+  return roles.reduce((total, role) => total + (role.totalPositions ?? 0), 0);
 }
 
 function ProjectCard({ project }) {
@@ -88,8 +85,7 @@ function ProjectCard({ project }) {
         </span>
 
         <span>
-          {totalPositions}{" "}
-          {totalPositions === 1 ? "position" : "positions"}
+          {totalPositions} {totalPositions === 1 ? "position" : "positions"}
         </span>
 
         <Link className={styles.detailsLink} to={`/projects/${_id}`}>

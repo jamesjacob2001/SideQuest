@@ -72,10 +72,7 @@ function ProfilePage() {
           <Link className={styles.editLink} to={`/profile/${id}/edit`}>
             Edit profile
           </Link>
-          <DeleteAccountButton
-            userId={String(user._id)}
-            userName={user.name}
-          />
+          <DeleteAccountButton userId={String(user._id)} userName={user.name} />
         </div>
       ) : null}
 

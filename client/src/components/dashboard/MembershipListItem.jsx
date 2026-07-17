@@ -53,10 +53,7 @@ function MembershipListItem({
 
       <div className={styles.side}>
         {showApplicant && applicant?._id && applicant?.name ? (
-          <Link
-            className={styles.applicant}
-            to={`/profile/${applicant._id}`}
-          >
+          <Link className={styles.applicant} to={`/profile/${applicant._id}`}>
             <img
               alt={`${applicant.name} avatar`}
               className={styles.avatar}

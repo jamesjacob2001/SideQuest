@@ -3,23 +3,13 @@ import PropTypes from "prop-types";
 import { buildProfileAvatarUrl } from "./buildProfileAvatarUrl.js";
 import styles from "./ProfileHeader.module.css";
 
-function ProfileHeader({
-  name,
-  username,
-  university,
-  major,
-  isRecruiting,
-}) {
+function ProfileHeader({ name, username, university, major, isRecruiting }) {
   const avatarUrl = buildProfileAvatarUrl(name);
 
   return (
     <header className={styles.header}>
       <div className={styles.identity}>
-        <img
-          alt={`${name} avatar`}
-          className={styles.avatar}
-          src={avatarUrl}
-        />
+        <img alt={`${name} avatar`} className={styles.avatar} src={avatarUrl} />
 
         <div>
           <h1 className={styles.name}>{name}</h1>

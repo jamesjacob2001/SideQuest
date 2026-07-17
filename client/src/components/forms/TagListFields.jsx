@@ -15,7 +15,9 @@ function TagListFields({ id, label, values, onChange, placeholder }) {
       return;
     }
 
-    if (values.some((value) => value.toLowerCase() === nextValue.toLowerCase())) {
+    if (
+      values.some((value) => value.toLowerCase() === nextValue.toLowerCase())
+    ) {
       setDraft("");
       return;
     }

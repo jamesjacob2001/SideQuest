@@ -1,10 +1,40 @@
-# Project Structure
+# SideQuest
 
-This document provides an overview of how the SideQuest repository is organized and the intended purpose of each directory. The goal is to keep the project modular, easy to navigate, and scalable as we continue to iterate throughout the semester. **Not every file or folder will be populated immediately**—many will be created as features are implemented.
+## Authors
+
+- Melissa Rejuan
+- James Jacob
+
+## Class Link
+
+<!-- Replace with your course / Canvas / syllabus URL before submission -->
+
+**TODO:** Add your class link here (e.g. Canvas course home page).
+
+## Project Objective
+
+SideQuest helps students discover side projects, find collaborators across fields, and manage teams. Users can browse projects, create and edit their own, maintain profiles, request to join roles, and track memberships from a personal dashboard.
+
+Authentication uses Passport Local with Express sessions stored in MongoDB. Data lives in MongoDB Atlas (`users`, `projects`, `team_memberships`).
+
+## Screenshot
+
+Add a screenshot of the running app at [`docs/screenshot.png`](docs/screenshot.png), then uncomment the image below:
+
+<!-- ![SideQuest screenshot](docs/screenshot.png) -->
+
+**Before submission:** capture Browse Projects or the Dashboard while logged in and save it as `docs/screenshot.png`.
+
+## How to Use the App
+
+1. Open the frontend (local: http://localhost:5173).
+2. **Browse Projects** to explore public projects (no login required).
+3. **Sign Up** or **Log In** (seeded demo password: `Password123!`).
+4. Edit **My Profile**, **Create Project**, apply to roles, and manage requests on **Dashboard**.
 
 ---
 
-# Running Locally
+# Running Locally / Build Instructions
 
 ## Prerequisites
 
@@ -43,18 +73,31 @@ Never commit `.env`. Do not put real Mongo credentials in this README.
 
 If Atlas Network Access does not allow your IP, the server will fail to start with a TLS/SSL connection error.
 
-### Seeded user login (demo)
+### Seed data (1,000+ records)
 
-Imported seed users use bcrypt password hashes. After importing `data/users.json`, run once:
+- **Users:** import at least 1,000 users into `sidequest_db.users` (team seed / Atlas import).
+- **Projects:** from the project root, with users already present:
+
+```bash
+npm run seed
+```
+
+- **Passwords for seeded users** (bcrypt demo hash):
 
 ```bash
 npm run rehash-passwords
 ```
 
-Then you can log in with any seeded user's email and password:
+Demo password for seeded users:
 
 ```text
 Password123!
+```
+
+- Optional memberships for dashboard demos:
+
+```bash
+npm run seed-team-memberships
 ```
 
 ## 3. Start the app
@@ -67,11 +110,11 @@ npm run dev
 
 This starts the Express API and the Vite React client together.
 
-| Service | URL |
-|---------|-----|
-| Frontend | http://localhost:5173 |
-| Backend API | http://localhost:3000 |
-| Health check | http://localhost:3000/api/health |
+| Service         | URL                                       |
+| --------------- | ----------------------------------------- |
+| Frontend        | http://localhost:5173                     |
+| Backend API     | http://localhost:3000                     |
+| Health check    | http://localhost:3000/api/health          |
 | Database health | http://localhost:3000/api/health/database |
 
 ### Run client or server alone
@@ -81,9 +124,17 @@ npm run client
 npm run server
 ```
 
+### Format code
+
+```bash
+npm run format
+```
+
 ---
 
 # Repository Overview
+
+This section describes how the SideQuest repository is organized. The goal is to keep the project modular, easy to navigate, and scalable.
 
 ```text
 sidequest/
@@ -93,7 +144,6 @@ sidequest/
 ├── docs/
 ├── .env.example
 ├── .gitignore
-├── eslint.config.js
 ├── prettier.config.js
 ├── LICENSE
 ├── README.md
@@ -104,15 +154,15 @@ sidequest/
 
 The root of the project contains project-wide configuration and documentation.
 
-| File | Purpose |
-|------|---------|
-| `package.json` | Root scripts for running both the frontend and backend simultaneously. |
-| `.env.example` | Template showing required environment variables (never commit `.env`). |
-| `.gitignore` | Files and folders excluded from Git. |
-| `eslint.config.js` | Shared ESLint configuration. |
-| `prettier.config.js` | Shared code formatting configuration. |
-| `README.md` | Main project documentation. |
-| `LICENSE` | MIT License. |
+| File                      | Purpose                                                                |
+| ------------------------- | ---------------------------------------------------------------------- |
+| `package.json`            | Root scripts for running both the frontend and backend simultaneously. |
+| `.env.example`            | Template showing required environment variables (never commit `.env`). |
+| `.gitignore`              | Files and folders excluded from Git.                                   |
+| `client/eslint.config.js` | Frontend ESLint configuration.                                         |
+| `prettier.config.js`      | Shared code formatting configuration.                                  |
+| `README.md`               | Main project documentation.                                            |
+| `LICENSE`                 | MIT License.                                                           |
 
 ---
 
@@ -318,11 +368,11 @@ Contains API functions that communicate with the Express backend using Fetch.
 Examples:
 
 ```js
-getProjects()
+getProjects();
 
-createProject()
+createProject();
 
-updateProfile()
+updateProfile();
 ```
 
 Keeping API calls separate prevents components from becoming cluttered.
@@ -539,7 +589,7 @@ Examples:
 - Projects
 - Team memberships
 
-Eventually these scripts will generate the 1,000+ records required by the project rubric.
+Seed scripts generate synthetic projects (1,000+) and optional team memberships. Users should be imported or seeded separately into MongoDB.
 
 ---
 
@@ -609,4 +659,3 @@ This design allows us to represent both join requests and active team members us
 - Separate UI, business logic, and database operations whenever possible.
 - Favor reusable components over duplicated code.
 - Organize code by feature on the frontend and by responsibility on the backend.
-- Use meaningful commit messages and work on feature branches before merging into `main`.

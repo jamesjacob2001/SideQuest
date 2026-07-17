@@ -26,15 +26,12 @@ function CreateProjectPage() {
         <p className={styles.eyebrow}>Start a SideQuest</p>
         <h1>Create a Project</h1>
         <p>
-          Describe your idea, define the contributors you need, and
-          publish the project for others to discover.
+          Describe your idea, define the contributors you need, and publish the
+          project for others to discover.
         </p>
       </header>
 
-      <ProjectForm
-        onSubmit={handleCreateProject}
-        isSubmitting={isSubmitting}
-      />
+      <ProjectForm onSubmit={handleCreateProject} isSubmitting={isSubmitting} />
     </main>
   );
 }

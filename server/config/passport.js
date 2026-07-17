@@ -2,10 +2,7 @@ import bcrypt from "bcrypt";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import {
-  findUserByEmail,
-  findUserById,
-} from "../services/userService.js";
+import { findUserByEmail, findUserById } from "../services/userService.js";
 
 export function configurePassport() {
   passport.use(

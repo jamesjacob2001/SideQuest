@@ -35,10 +35,7 @@ function OwnedProjectListItem({ project, showManageActions }) {
         </Link>
 
         {showManageActions ? (
-          <Link
-            className={styles.editLink}
-            to={`/projects/${projectId}/edit`}
-          >
+          <Link className={styles.editLink} to={`/projects/${projectId}/edit`}>
             Edit
           </Link>
         ) : null}

@@ -1,17 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-  Link,
-  Navigate,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 
 import { useAuth } from "../components/auth/useAuth.js";
 import ProjectForm from "../components/forms/ProjectForm.jsx";
-import {
-  getProjectById,
-  updateProject,
-} from "../services/projectApi.js";
+import { getProjectById, updateProject } from "../services/projectApi.js";
 import styles from "./EditProjectPage.module.css";
 
 function EditProjectPage() {
@@ -45,10 +37,7 @@ function EditProjectPage() {
     setIsSubmitting(true);
 
     try {
-      const updatedProject = await updateProject(
-        projectId,
-        projectData,
-      );
+      const updatedProject = await updateProject(projectId, projectData);
 
       navigate(`/projects/${updatedProject._id}`);
     } finally {
@@ -82,8 +71,7 @@ function EditProjectPage() {
     );
   }
 
-  const isOwner =
-    currentUser?._id?.toString() === String(project.ownerId);
+  const isOwner = currentUser?._id?.toString() === String(project.ownerId);
 
   if (!isOwner) {
     return <Navigate replace to={`/projects/${projectId}`} />;
@@ -91,10 +79,7 @@ function EditProjectPage() {
 
   return (
     <main className={styles.page}>
-      <Link
-        className={styles.link}
-        to={`/projects/${projectId}`}
-      >
+      <Link className={styles.link} to={`/projects/${projectId}`}>
         ← Cancel editing
       </Link>
 
@@ -102,8 +87,7 @@ function EditProjectPage() {
         <p className={styles.eyebrow}>Project management</p>
         <h1>Edit Project</h1>
         <p>
-          Update the project information, open roles, and working
-          arrangements.
+          Update the project information, open roles, and working arrangements.
         </p>
       </header>
 

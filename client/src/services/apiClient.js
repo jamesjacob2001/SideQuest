@@ -17,9 +17,7 @@ async function apiRequest(url, options = {}) {
   }
 
   if (!response.ok) {
-    const error = new Error(
-      responseBody?.message || "The API request failed.",
-    );
+    const error = new Error(responseBody?.message || "The API request failed.");
 
     error.status = response.status;
     error.details = responseBody?.errors ?? [];

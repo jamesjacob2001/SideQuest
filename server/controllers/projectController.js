@@ -1,36 +1,33 @@
-import { getPublicProjects, getProjectById, createProject, updateProjectById, deleteProjectById, } from "../services/projectService.js";
-import { buildProjectDocument, buildUpdatedProjectDocument, } from "../utils/buildProjectDocument.js";
+import {
+  getPublicProjects,
+  getProjectById,
+  createProject,
+  updateProjectById,
+  deleteProjectById,
+} from "../services/projectService.js";
+import {
+  buildProjectDocument,
+  buildUpdatedProjectDocument,
+} from "../utils/buildProjectDocument.js";
 import { validateProject } from "../utils/validators/projectValidator.js";
 
 export async function listProjects(request, response, next) {
   try {
-    const requestedPage = Number.parseInt(
-      request.query.page,
-      10,
-    );
+    const requestedPage = Number.parseInt(request.query.page, 10);
 
-    const requestedLimit = Number.parseInt(
-      request.query.limit,
-      10,
-    );
+    const requestedLimit = Number.parseInt(request.query.limit, 10);
 
     const page =
-      Number.isInteger(requestedPage) && requestedPage > 0
-        ? requestedPage
-        : 1;
+      Number.isInteger(requestedPage) && requestedPage > 0 ? requestedPage : 1;
 
     const limit =
       Number.isInteger(requestedLimit) && requestedLimit > 0
         ? Math.min(requestedLimit, 100)
         : 24;
 
-    const { projects, totalProjects } =
-      await getPublicProjects(page, limit);
+    const { projects, totalProjects } = await getPublicProjects(page, limit);
 
-    const totalPages = Math.max(
-      1,
-      Math.ceil(totalProjects / limit),
-    );
+    const totalPages = Math.max(1, Math.ceil(totalProjects / limit));
 
     return response.status(200).json({
       success: true,
@@ -90,10 +87,7 @@ export async function addProject(request, response, next) {
     // Owner comes from the authenticated Passport session user.
     const ownerId = request.user._id;
 
-    const projectDocument = buildProjectDocument(
-      request.body,
-      ownerId,
-    );
+    const projectDocument = buildProjectDocument(request.body, ownerId);
 
     const createdProject = await createProject(projectDocument);
 
@@ -109,9 +103,7 @@ export async function addProject(request, response, next) {
 
 export async function editProject(request, response, next) {
   try {
-    const existingProject = await getProjectById(
-      request.params.id,
-    );
+    const existingProject = await getProjectById(request.params.id);
 
     if (!existingProject) {
       return response.status(404).json({
@@ -121,15 +113,12 @@ export async function editProject(request, response, next) {
       });
     }
 
-    const updatedProjectDocument =
-      buildUpdatedProjectDocument(
-        existingProject,
-        request.body,
-      );
-
-    const validation = validateProject(
-      updatedProjectDocument,
+    const updatedProjectDocument = buildUpdatedProjectDocument(
+      existingProject,
+      request.body,
     );
+
+    const validation = validateProject(updatedProjectDocument);
 
     if (!validation.isValid) {
       return response.status(400).json({

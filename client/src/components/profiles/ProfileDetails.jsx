@@ -29,7 +29,10 @@ function ProfileDetails({
   graduationYear,
 }) {
   return (
-    <section className={styles.section} aria-labelledby="profile-details-heading">
+    <section
+      className={styles.section}
+      aria-labelledby="profile-details-heading"
+    >
       <h2 className={styles.heading} id="profile-details-heading">
         About
       </h2>

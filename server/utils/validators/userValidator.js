@@ -11,10 +11,7 @@ function isOptionalNonEmptyString(value) {
 }
 
 function isStringArrayAllowEmpty(value) {
-  return (
-    Array.isArray(value) &&
-    value.every((item) => isNonEmptyString(item))
-  );
+  return Array.isArray(value) && value.every((item) => isNonEmptyString(item));
 }
 
 function isValidEmail(value) {
@@ -24,17 +21,11 @@ function isValidEmail(value) {
 function validatePortfolioLinks(portfolioLinks) {
   const errors = [];
 
-  if (
-    portfolioLinks === undefined ||
-    portfolioLinks === null
-  ) {
+  if (portfolioLinks === undefined || portfolioLinks === null) {
     return errors;
   }
 
-  if (
-    typeof portfolioLinks !== "object" ||
-    Array.isArray(portfolioLinks)
-  ) {
+  if (typeof portfolioLinks !== "object" || Array.isArray(portfolioLinks)) {
     return ["portfolioLinks must be an object."];
   }
 
@@ -149,11 +140,7 @@ export function validateProfileUpdate(profileUpdates) {
     errors.push("yearLabel must be a valid class standing when provided.");
   }
 
-  for (const field of [
-    "technicalSkills",
-    "interests",
-    "rolePreferences",
-  ]) {
+  for (const field of ["technicalSkills", "interests", "rolePreferences"]) {
     if (
       Object.prototype.hasOwnProperty.call(profileUpdates, field) &&
       !isStringArrayAllowEmpty(profileUpdates[field])

@@ -12,11 +12,7 @@ import {
   updateTeamMembershipStatus,
 } from "../services/teamMembershipService.js";
 
-export async function addTeamMembership(
-  request,
-  response,
-  next,
-) {
+export async function addTeamMembership(request, response, next) {
   try {
     const { projectId, roleId } = request.body;
 
@@ -57,9 +53,7 @@ export async function addTeamMembership(
       });
     }
 
-    const selectedRole = project.roles.find(
-      (role) => role.roleId === roleId,
-    );
+    const selectedRole = project.roles.find((role) => role.roleId === roleId);
 
     if (!selectedRole) {
       return response.status(404).json({
@@ -94,8 +88,7 @@ export async function addTeamMembership(
       updatedAt: currentDate,
     };
 
-    const createdMembership =
-      await createTeamMembership(membershipDocument);
+    const createdMembership = await createTeamMembership(membershipDocument);
 
     return response.status(201).json({
       success: true,
@@ -115,16 +108,11 @@ export async function addTeamMembership(
   }
 }
 
-export async function listMyTeamMemberships(
-  request,
-  response,
-  next,
-) {
+export async function listMyTeamMemberships(request, response, next) {
   try {
-    const memberships =
-      await getApplicantMembershipsWithProjects(
-        request.user._id,
-      );
+    const memberships = await getApplicantMembershipsWithProjects(
+      request.user._id,
+    );
 
     return response.status(200).json({
       success: true,
@@ -138,15 +126,9 @@ export async function listMyTeamMemberships(
   }
 }
 
-export async function listIncomingTeamMemberships(
-  request,
-  response,
-  next,
-) {
+export async function listIncomingTeamMemberships(request, response, next) {
   try {
-    const memberships = await getIncomingMembershipsForOwner(
-      request.user._id,
-    );
+    const memberships = await getIncomingMembershipsForOwner(request.user._id);
 
     return response.status(200).json({
       success: true,
@@ -160,11 +142,7 @@ export async function listIncomingTeamMemberships(
   }
 }
 
-export async function listProjectTeamMemberships(
-  request,
-  response,
-  next,
-) {
+export async function listProjectTeamMemberships(request, response, next) {
   try {
     const { projectId } = request.params;
 
@@ -186,26 +164,20 @@ export async function listProjectTeamMemberships(
       });
     }
 
-    const authenticatedUserId =
-      request.user._id.toString();
+    const authenticatedUserId = request.user._id.toString();
 
     const projectOwnerId =
-      project.ownerId?.toString?.() ??
-      String(project.ownerId);
+      project.ownerId?.toString?.() ?? String(project.ownerId);
 
     if (authenticatedUserId !== projectOwnerId) {
       return response.status(403).json({
         success: false,
         data: null,
-        message:
-          "Only the project owner can view these applications.",
+        message: "Only the project owner can view these applications.",
       });
     }
 
-    const memberships =
-      await getProjectMembershipsWithApplicants(
-        projectId,
-      );
+    const memberships = await getProjectMembershipsWithApplicants(projectId);
 
     return response.status(200).json({
       success: true,
@@ -216,19 +188,14 @@ export async function listProjectTeamMemberships(
         },
         memberships,
       },
-      message:
-        "Project applications retrieved successfully.",
+      message: "Project applications retrieved successfully.",
     });
   } catch (error) {
     return next(error);
   }
 }
 
-export async function updateMembershipStatus(
-  request,
-  response,
-  next,
-) {
+export async function updateMembershipStatus(request, response, next) {
   try {
     const { membershipId } = request.params;
     const { status } = request.body;
@@ -240,19 +207,14 @@ export async function updateMembershipStatus(
       });
     }
 
-    if (
-      status !== "accepted" &&
-      status !== "rejected"
-    ) {
+    if (status !== "accepted" && status !== "rejected") {
       return response.status(400).json({
         success: false,
-        message:
-          "Status must be accepted or rejected.",
+        message: "Status must be accepted or rejected.",
       });
     }
 
-    const membership =
-      await getTeamMembershipById(membershipId);
+    const membership = await getTeamMembershipById(membershipId);
 
     if (!membership) {
       return response.status(404).json({
@@ -261,9 +223,7 @@ export async function updateMembershipStatus(
       });
     }
 
-    const project = await getProjectById(
-      membership.projectId.toString(),
-    );
+    const project = await getProjectById(membership.projectId.toString());
 
     if (!project) {
       return response.status(404).json({
@@ -272,28 +232,22 @@ export async function updateMembershipStatus(
       });
     }
 
-    if (
-      project.ownerId.toString() !==
-      request.user._id.toString()
-    ) {
+    if (project.ownerId.toString() !== request.user._id.toString()) {
       return response.status(403).json({
         success: false,
-        message:
-          "Only the project owner may update applications.",
+        message: "Only the project owner may update applications.",
       });
     }
 
-    const updatedMembership =
-      await updateTeamMembershipStatus(
-        membershipId,
-        status,
-      );
+    const updatedMembership = await updateTeamMembershipStatus(
+      membershipId,
+      status,
+    );
 
     if (!updatedMembership) {
       return response.status(409).json({
         success: false,
-        message:
-          "Only pending applications may be updated.",
+        message: "Only pending applications may be updated.",
       });
     }
 
@@ -307,11 +261,7 @@ export async function updateMembershipStatus(
   }
 }
 
-export async function withdrawMembership(
-  request,
-  response,
-  next,
-) {
+export async function withdrawMembership(request, response, next) {
   try {
     const { membershipId } = request.params;
 
@@ -322,17 +272,15 @@ export async function withdrawMembership(
       });
     }
 
-    const deleted =
-      await deletePendingTeamMembership(
-        membershipId,
-        request.user._id,
-      );
+    const deleted = await deletePendingTeamMembership(
+      membershipId,
+      request.user._id,
+    );
 
     if (!deleted) {
       return response.status(404).json({
         success: false,
-        message:
-          "Pending application not found.",
+        message: "Pending application not found.",
       });
     }
 
@@ -341,4 +289,3 @@ export async function withdrawMembership(
     next(error);
   }
 }
-

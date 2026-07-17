@@ -58,14 +58,6 @@ export const EXPERIENCE_LEVELS = [
   "Advanced",
 ];
 
-export const LOCATION_TYPES = [
-  "Remote",
-  "Hybrid",
-  "In Person",
-];
+export const LOCATION_TYPES = ["Remote", "Hybrid", "In Person"];
 
-export const PROJECT_STATUSES = [
-  "Recruiting",
-  "Active",
-  "Paused",
-];
+export const PROJECT_STATUSES = ["Recruiting", "Active", "Paused"];

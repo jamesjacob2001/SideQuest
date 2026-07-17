@@ -14,7 +14,7 @@ function LoginPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const redirectTo = location.state?.from || "/";
+  const redirectTo = location.state?.from || "/projects";
 
   async function handleSubmit(event) {
     event.preventDefault();

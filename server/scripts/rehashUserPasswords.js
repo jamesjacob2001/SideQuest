@@ -23,15 +23,17 @@ async function rehashUserPasswords() {
   await connectToDatabase();
 
   const passwordHash = await bcrypt.hash(DEMO_PASSWORD, SALT_ROUNDS);
-  const result = await getDatabase().collection("users").updateMany(
-    {},
-    {
-      $set: {
-        passwordHash,
-        updatedAt: new Date(),
+  const result = await getDatabase()
+    .collection("users")
+    .updateMany(
+      {},
+      {
+        $set: {
+          passwordHash,
+          updatedAt: new Date(),
+        },
       },
-    },
-  );
+    );
 
   console.log(
     `Updated ${result.modifiedCount} users with bcrypt demo password.`,

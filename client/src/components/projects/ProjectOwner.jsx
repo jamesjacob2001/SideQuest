@@ -12,10 +12,7 @@ function ProjectOwner({ owner }) {
   const avatarUrl = buildProfileAvatarUrl(owner.name);
 
   return (
-    <Link
-      className={styles.owner}
-      to={`/profile/${owner._id}`}
-    >
+    <Link className={styles.owner} to={`/profile/${owner._id}`}>
       <img
         alt={`${owner.name} avatar`}
         className={styles.avatar}

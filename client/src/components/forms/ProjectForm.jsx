@@ -1,4 +1,4 @@
-import { useState, } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 
 import {
@@ -49,8 +49,8 @@ function buildInitialFormData(project) {
     return initialFormData;
   }
 
-  const standardTechnologies = project.technologies?.filter(
-    (technology) => TECHNOLOGY_OPTIONS.includes(technology),
+  const standardTechnologies = project.technologies?.filter((technology) =>
+    TECHNOLOGY_OPTIONS.includes(technology),
   );
 
   const customTechnologies = project.technologies?.filter(
@@ -63,8 +63,7 @@ function buildInitialFormData(project) {
     description: {
       overview: project.description?.overview ?? "",
       goals: project.description?.goals ?? "",
-      currentProgress:
-        project.description?.currentProgress ?? "",
+      currentProgress: project.description?.currentProgress ?? "",
       lookingFor: project.description?.lookingFor ?? "",
     },
     categories: project.categories ?? [],
@@ -79,13 +78,11 @@ function buildInitialFormData(project) {
             description: role.description ?? "",
             requiredSkills: role.requiredSkills ?? [],
             customSkill: "",
-            experienceLevel:
-              role.experienceLevel ?? "Open to All Levels",
+            experienceLevel: role.experienceLevel ?? "Open to All Levels",
             totalPositions: role.totalPositions ?? 1,
           }))
         : [createEmptyRole()],
-    experienceLevel:
-      project.experienceLevel ?? "Open to All Levels",
+    experienceLevel: project.experienceLevel ?? "Open to All Levels",
     locationType: project.locationType ?? "Remote",
     location: project.location ?? "",
     weeklyCommitment: project.weeklyCommitment ?? "",
@@ -153,8 +150,7 @@ function ProjectForm({
         index === roleIndex
           ? {
               ...role,
-              [name]:
-                name === "totalPositions" ? Number(value) : value,
+              [name]: name === "totalPositions" ? Number(value) : value,
             }
           : role,
       ),
@@ -191,20 +187,17 @@ function ProjectForm({
   function removeRole(roleIndex) {
     setFormData((currentData) => ({
       ...currentData,
-      roles: currentData.roles.filter(
-        (_, index) => index !== roleIndex,
-      ),
+      roles: currentData.roles.filter((_, index) => index !== roleIndex),
     }));
   }
-    function addCustomSkill(roleIndex) {
+  function addCustomSkill(roleIndex) {
     const role = formData.roles[roleIndex];
     const customSkill = role.customSkill.trim();
 
     if (
       !customSkill ||
       role.requiredSkills.some(
-        (skill) =>
-          skill.toLowerCase() === customSkill.toLowerCase(),
+        (skill) => skill.toLowerCase() === customSkill.toLowerCase(),
       )
     ) {
       return;
@@ -216,10 +209,7 @@ function ProjectForm({
         index === roleIndex
           ? {
               ...currentRole,
-              requiredSkills: [
-                ...currentRole.requiredSkills,
-                customSkill,
-              ],
+              requiredSkills: [...currentRole.requiredSkills, customSkill],
               customSkill: "",
             }
           : currentRole,
@@ -241,7 +231,8 @@ function ProjectForm({
           : role,
       ),
     }));
-  }  function buildProjectPayload() {
+  }
+  function buildProjectPayload() {
     const customCategory = formData.customCategory.trim();
     const customTechnology = formData.customTechnology.trim();
 
@@ -251,8 +242,7 @@ function ProjectForm({
       description: {
         overview: formData.description.overview.trim(),
         goals: formData.description.goals.trim(),
-        currentProgress:
-          formData.description.currentProgress.trim(),
+        currentProgress: formData.description.currentProgress.trim(),
         lookingFor: formData.description.lookingFor.trim(),
       },
       categories: formData.categories,
@@ -287,9 +277,9 @@ function ProjectForm({
       }),
       ...(formData.compensation.trim() && {
         compensation: {
-            type: formData.compensation.trim(),
+          type: formData.compensation.trim(),
         },
-     }),
+      }),
     };
   }
 
@@ -305,7 +295,8 @@ function ProjectForm({
       setFormError(error.message);
       setValidationErrors(error.details ?? []);
     }
-  }  return (
+  }
+  return (
     <form className={styles.form} onSubmit={handleSubmit}>
       {formError && (
         <div className={styles.errorSummary} role="alert">
@@ -355,12 +346,12 @@ function ProjectForm({
           </p>
         </div>
       </section>
-            <section className={styles.formSection}>
+      <section className={styles.formSection}>
         <div className={styles.sectionHeading}>
           <h2>Project description</h2>
           <p>
-            Explain what the project is, where it is going, and what
-            help is needed.
+            Explain what the project is, where it is going, and what help is
+            needed.
           </p>
         </div>
 
@@ -401,9 +392,7 @@ function ProjectForm({
         </div>
 
         <div className={styles.field}>
-          <label htmlFor="lookingFor">
-            Who is the team looking for?
-          </label>
+          <label htmlFor="lookingFor">Who is the team looking for?</label>
           <textarea
             id="lookingFor"
             name="lookingFor"
@@ -414,7 +403,7 @@ function ProjectForm({
           />
         </div>
       </section>
-            <section className={styles.formSection}>
+      <section className={styles.formSection}>
         <div className={styles.sectionHeading}>
           <h2>Categories and technologies</h2>
           <p>Help contributors find relevant projects.</p>
@@ -442,9 +431,7 @@ function ProjectForm({
 
         {formData.categories.includes("Other") && (
           <div className={styles.field}>
-            <label htmlFor="customCategory">
-              Custom category
-            </label>
+            <label htmlFor="customCategory">Custom category</label>
             <input
               id="customCategory"
               name="customCategory"
@@ -461,10 +448,7 @@ function ProjectForm({
 
           <div className={styles.checkboxGrid}>
             {TECHNOLOGY_OPTIONS.map((technology) => (
-              <label
-                className={styles.checkboxLabel}
-                key={technology}
-              >
+              <label className={styles.checkboxLabel} key={technology}>
                 <input
                   type="checkbox"
                   value={technology}
@@ -480,9 +464,7 @@ function ProjectForm({
         </fieldset>
 
         <div className={styles.field}>
-          <label htmlFor="customTechnology">
-            Additional technology
-          </label>
+          <label htmlFor="customTechnology">Additional technology</label>
           <input
             id="customTechnology"
             name="customTechnology"
@@ -492,34 +474,25 @@ function ProjectForm({
           />
         </div>
       </section>
-            <section className={styles.formSection}>
+      <section className={styles.formSection}>
         <div className={styles.sectionHeading}>
           <h2>Open roles</h2>
-          <p>
-            Add at least one role for the contributors you need.
-          </p>
+          <p>Add at least one role for the contributors you need.</p>
         </div>
 
         <div className={styles.roleList}>
           {formData.roles.map((role, roleIndex) => (
-            <fieldset
-              className={styles.roleCard}
-              key={`role-${roleIndex}`}
-            >
+            <fieldset className={styles.roleCard} key={`role-${roleIndex}`}>
               <legend>Role {roleIndex + 1}</legend>
 
               <div className={styles.field}>
-                <label htmlFor={`role-title-${roleIndex}`}>
-                  Role title
-                </label>
+                <label htmlFor={`role-title-${roleIndex}`}>Role title</label>
                 <input
                   id={`role-title-${roleIndex}`}
                   name="title"
                   type="text"
                   value={role.title}
-                  onChange={(event) =>
-                    handleRoleChange(roleIndex, event)
-                  }
+                  onChange={(event) => handleRoleChange(roleIndex, event)}
                   required
                 />
               </div>
@@ -533,9 +506,7 @@ function ProjectForm({
                   name="description"
                   rows="3"
                   value={role.description}
-                  onChange={(event) =>
-                    handleRoleChange(roleIndex, event)
-                  }
+                  onChange={(event) => handleRoleChange(roleIndex, event)}
                 />
               </div>
 
@@ -548,9 +519,7 @@ function ProjectForm({
                     id={`role-level-${roleIndex}`}
                     name="experienceLevel"
                     value={role.experienceLevel}
-                    onChange={(event) =>
-                      handleRoleChange(roleIndex, event)
-                    }
+                    onChange={(event) => handleRoleChange(roleIndex, event)}
                   >
                     {EXPERIENCE_LEVELS.map((level) => (
                       <option value={level} key={level}>
@@ -570,22 +539,17 @@ function ProjectForm({
                     type="number"
                     min="1"
                     value={role.totalPositions}
-                    onChange={(event) =>
-                      handleRoleChange(roleIndex, event)
-                    }
+                    onChange={(event) => handleRoleChange(roleIndex, event)}
                     required
                   />
                 </div>
               </div>
-                            <fieldset className={styles.fieldset}>
+              <fieldset className={styles.fieldset}>
                 <legend>Required skills</legend>
 
                 <div className={styles.checkboxGrid}>
                   {TECHNOLOGY_OPTIONS.map((skill) => (
-                    <label
-                      className={styles.checkboxLabel}
-                      key={skill}
-                    >
+                    <label className={styles.checkboxLabel} key={skill}>
                       <input
                         type="checkbox"
                         value={skill}
@@ -610,9 +574,7 @@ function ProjectForm({
                     name="customSkill"
                     type="text"
                     value={role.customSkill}
-                    onChange={(event) =>
-                      handleRoleChange(roleIndex, event)
-                    }
+                    onChange={(event) => handleRoleChange(roleIndex, event)}
                   />
                 </div>
 
@@ -632,9 +594,7 @@ function ProjectForm({
                       className={styles.skillButton}
                       type="button"
                       key={skill}
-                      onClick={() =>
-                        removeRoleSkill(roleIndex, skill)
-                      }
+                      onClick={() => removeRoleSkill(roleIndex, skill)}
                     >
                       {skill} ×
                     </button>
@@ -663,7 +623,7 @@ function ProjectForm({
           Add another role
         </button>
       </section>
-            <section className={styles.formSection}>
+      <section className={styles.formSection}>
         <div className={styles.sectionHeading}>
           <h2>Project logistics</h2>
           <p>Describe how and when the team will work together.</p>
@@ -671,9 +631,7 @@ function ProjectForm({
 
         <div className={styles.twoColumnFields}>
           <div className={styles.field}>
-            <label htmlFor="experienceLevel">
-              Overall experience level
-            </label>
+            <label htmlFor="experienceLevel">Overall experience level</label>
             <select
               id="experienceLevel"
               name="experienceLevel"
@@ -719,9 +677,7 @@ function ProjectForm({
 
         <div className={styles.twoColumnFields}>
           <div className={styles.field}>
-            <label htmlFor="weeklyCommitment">
-              Weekly commitment
-            </label>
+            <label htmlFor="weeklyCommitment">Weekly commitment</label>
             <input
               id="weeklyCommitment"
               name="weeklyCommitment"

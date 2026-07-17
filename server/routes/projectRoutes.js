@@ -1,7 +1,12 @@
 import { Router } from "express";
 
-
-import { addProject, editProject, listProjects, removeProject, showProject, } from "../controllers/projectController.js";
+import {
+  addProject,
+  editProject,
+  listProjects,
+  removeProject,
+  showProject,
+} from "../controllers/projectController.js";
 import { listProjectTeamMemberships } from "../controllers/teamMembershipController.js";
 
 import { requireAuth } from "../middleware/requireAuth.js";

@@ -15,10 +15,7 @@ function teamMembershipsCollection() {
 }
 
 export async function listUsers() {
-  return usersCollection()
-    .find({})
-    .sort({ createdAt: -1 })
-    .toArray();
+  return usersCollection().find({}).sort({ createdAt: -1 }).toArray();
 }
 
 export async function findUserById(userId) {
@@ -88,11 +85,7 @@ export async function deleteUserAndRelatedData(userId) {
   }
 
   const objectId = new ObjectId(userId);
-  const ownerIdMatchers = [
-    objectId,
-    userId,
-    objectId.toString(),
-  ];
+  const ownerIdMatchers = [objectId, userId, objectId.toString()];
 
   const ownedProjects = await projectsCollection()
     .find({
@@ -118,11 +111,7 @@ export async function deleteUserAndRelatedData(userId) {
     });
   }
 
-  const membershipUserMatchers = [
-    objectId,
-    userId,
-    objectId.toString(),
-  ];
+  const membershipUserMatchers = [objectId, userId, objectId.toString()];
 
   if (typeof user.userId === "string" && user.userId.trim().length > 0) {
     membershipUserMatchers.push(user.userId);

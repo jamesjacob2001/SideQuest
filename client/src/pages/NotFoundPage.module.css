@@ -1,0 +1,31 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  max-width: 520px;
+  padding: 2rem 0;
+}
+
+.page h1 {
+  margin: 0;
+  color: #f4f4f7;
+}
+
+.page p {
+  margin: 0;
+  color: #c6c7d0;
+  line-height: 1.6;
+}
+
+.link {
+  width: fit-content;
+  margin-top: 0.5rem;
+  color: #adafff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}

@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
 
+import styles from "./NotFoundPage.module.css";
+
 function NotFoundPage() {
   return (
-    <section>
-      <h1>Page Not Found</h1>
-      <p>The page you requested does not exist.</p>
-      <Link to="/">Return home</Link>
+    <section className={styles.page}>
+      <h1>Page not found</h1>
+      <p>That route does not exist in SideQuest.</p>
+      <Link className={styles.link} to="/projects">
+        Browse projects
+      </Link>
     </section>
   );
 }

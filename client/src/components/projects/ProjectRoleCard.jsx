@@ -5,12 +5,7 @@ import { Link } from "react-router-dom";
 import { createMembership } from "../../services/membershipApi.js";
 import styles from "./ProjectRoleCard.module.css";
 
-function ProjectRoleCard({
-  role,
-  projectId,
-  isAuthenticated,
-  isOwner,
-}) {
+function ProjectRoleCard({ role, projectId, isAuthenticated, isOwner }) {
   const {
     roleId,
     title,
@@ -50,14 +45,11 @@ function ProjectRoleCard({
         </div>
 
         <span className={styles.positions}>
-          {totalPositions}{" "}
-          {totalPositions === 1 ? "position" : "positions"}
+          {totalPositions} {totalPositions === 1 ? "position" : "positions"}
         </span>
       </div>
 
-      {description && (
-        <p className={styles.description}>{description}</p>
-      )}
+      {description && <p className={styles.description}>{description}</p>}
 
       {requiredSkills.length > 0 && (
         <div className={styles.skillsSection}>
@@ -79,9 +71,7 @@ function ProjectRoleCard({
             Log in to apply
           </Link>
         ) : isOwner ? (
-          <p className={styles.ownerMessage}>
-            You own this project!
-          </p>
+          <p className={styles.ownerMessage}>You own this project!</p>
         ) : hasApplied ? (
           <p className={styles.successMessage} role="status">
             Application submitted successfully!

@@ -4,7 +4,10 @@ import DashboardSection from "../components/dashboard/DashboardSection.jsx";
 import MembershipListItem from "../components/dashboard/MembershipListItem.jsx";
 import OwnedProjectListItem from "../components/dashboard/OwnedProjectListItem.jsx";
 import { getDashboard } from "../services/dashboardApi.js";
-import { updateMembershipStatus, withdrawMembership, } from "../services/membershipApi.js";
+import {
+  updateMembershipStatus,
+  withdrawMembership,
+} from "../services/membershipApi.js";
 import styles from "./DashboardPage.module.css";
 
 const EMPTY_DASHBOARD = {

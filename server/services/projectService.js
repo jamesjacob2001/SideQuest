@@ -130,10 +130,7 @@ export async function createProject(projectDocument) {
   };
 }
 
-export async function updateProjectById(
-  projectId,
-  projectDocument,
-) {
+export async function updateProjectById(projectId, projectDocument) {
   const database = getDatabase();
   const objectId = new ObjectId(projectId);
 

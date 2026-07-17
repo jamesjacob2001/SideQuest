@@ -6,10 +6,7 @@ function toObjectId(id) {
   return new ObjectId(id);
 }
 
-export async function findExistingApplication(
-  projectId,
-  applicantId,
-) {
+export async function findExistingApplication(projectId, applicantId) {
   const database = getDatabase();
 
   return database.collection("team_memberships").findOne({
@@ -18,9 +15,7 @@ export async function findExistingApplication(
   });
 }
 
-export async function createTeamMembership(
-  membershipDocument,
-) {
+export async function createTeamMembership(membershipDocument) {
   const database = getDatabase();
 
   const result = await database
@@ -33,9 +28,7 @@ export async function createTeamMembership(
   };
 }
 
-export async function getTeamMembershipById(
-  membershipId,
-) {
+export async function getTeamMembershipById(membershipId) {
   const database = getDatabase();
 
   return database.collection("team_memberships").findOne({
@@ -43,9 +36,7 @@ export async function getTeamMembershipById(
   });
 }
 
-export async function getTeamMembershipsByApplicant(
-  applicantId,
-) {
+export async function getTeamMembershipsByApplicant(applicantId) {
   const database = getDatabase();
 
   return database
@@ -59,9 +50,7 @@ export async function getTeamMembershipsByApplicant(
     .toArray();
 }
 
-export async function getTeamMembershipsByProject(
-  projectId,
-) {
+export async function getTeamMembershipsByProject(projectId) {
   const database = getDatabase();
 
   return database
@@ -75,33 +64,28 @@ export async function getTeamMembershipsByProject(
     .toArray();
 }
 
-export async function updateTeamMembershipStatus(
-  membershipId,
-  status,
-) {
+export async function updateTeamMembershipStatus(membershipId, status) {
   const database = getDatabase();
   const objectId = toObjectId(membershipId);
   const updatedAt = new Date();
 
-  const result = await database
-    .collection("team_memberships")
-    .updateOne(
-      {
-        _id: objectId,
-        status: "pending",
+  const result = await database.collection("team_memberships").updateOne(
+    {
+      _id: objectId,
+      status: "pending",
+    },
+    {
+      $set: {
+        status,
+        updatedAt,
+        ...(status === "accepted"
+          ? {
+              joinedAt: updatedAt,
+            }
+          : {}),
       },
-      {
-        $set: {
-          status,
-          updatedAt,
-          ...(status === "accepted"
-            ? {
-                joinedAt: updatedAt,
-              }
-            : {}),
-        },
-      },
-    );
+    },
+  );
 
   if (result.matchedCount === 0) {
     return null;
@@ -112,19 +96,14 @@ export async function updateTeamMembershipStatus(
   });
 }
 
-export async function deletePendingTeamMembership(
-  membershipId,
-  applicantId,
-) {
+export async function deletePendingTeamMembership(membershipId, applicantId) {
   const database = getDatabase();
 
-  const result = await database
-    .collection("team_memberships")
-    .deleteOne({
-      _id: toObjectId(membershipId),
-      applicantId: toObjectId(applicantId),
-      status: "pending",
-    });
+  const result = await database.collection("team_memberships").deleteOne({
+    _id: toObjectId(membershipId),
+    applicantId: toObjectId(applicantId),
+    status: "pending",
+  });
 
   return result.deletedCount === 1;
 }
@@ -156,9 +135,7 @@ function summarizeApplicant(user) {
   };
 }
 
-export async function getApplicantMembershipsWithProjects(
-  applicantId,
-) {
+export async function getApplicantMembershipsWithProjects(applicantId) {
   const database = getDatabase();
 
   const memberships = await database
@@ -173,9 +150,7 @@ export async function getApplicantMembershipsWithProjects(
 
   const projectIds = [
     ...new Set(
-      memberships.map((membership) =>
-        membership.projectId.toString(),
-      ),
+      memberships.map((membership) => membership.projectId.toString()),
     ),
   ];
 
@@ -187,18 +162,13 @@ export async function getApplicantMembershipsWithProjects(
     .collection("projects")
     .find({
       _id: {
-        $in: projectIds.map(
-          (projectId) => new ObjectId(projectId),
-        ),
+        $in: projectIds.map((projectId) => new ObjectId(projectId)),
       },
     })
     .toArray();
 
   const projectsById = new Map(
-    projects.map((project) => [
-      project._id.toString(),
-      project,
-    ]),
+    projects.map((project) => [project._id.toString(), project]),
   );
 
   return memberships.map((membership) => ({
@@ -209,9 +179,7 @@ export async function getApplicantMembershipsWithProjects(
   }));
 }
 
-export async function getProjectMembershipsWithApplicants(
-  projectId,
-) {
+export async function getProjectMembershipsWithApplicants(projectId) {
   const database = getDatabase();
 
   const memberships = await database
@@ -226,9 +194,7 @@ export async function getProjectMembershipsWithApplicants(
 
   const applicantIds = [
     ...new Set(
-      memberships.map((membership) =>
-        membership.applicantId.toString(),
-      ),
+      memberships.map((membership) => membership.applicantId.toString()),
     ),
   ];
 
@@ -241,9 +207,7 @@ export async function getProjectMembershipsWithApplicants(
     .find(
       {
         _id: {
-          $in: applicantIds.map(
-            (applicantId) => new ObjectId(applicantId),
-          ),
+          $in: applicantIds.map((applicantId) => new ObjectId(applicantId)),
         },
       },
       {
@@ -257,18 +221,13 @@ export async function getProjectMembershipsWithApplicants(
     .toArray();
 
   const applicantsById = new Map(
-    applicants.map((applicant) => [
-      applicant._id.toString(),
-      applicant,
-    ]),
+    applicants.map((applicant) => [applicant._id.toString(), applicant]),
   );
 
   return memberships.map((membership) => ({
     ...membership,
     applicant: summarizeApplicant(
-      applicantsById.get(
-        membership.applicantId.toString(),
-      ),
+      applicantsById.get(membership.applicantId.toString()),
     ),
   }));
 }
@@ -299,10 +258,7 @@ export async function getIncomingMembershipsForOwner(ownerId) {
   }
 
   const projectsById = new Map(
-    ownedProjects.map((project) => [
-      project._id.toString(),
-      project,
-    ]),
+    ownedProjects.map((project) => [project._id.toString(), project]),
   );
 
   const memberships = await database
@@ -324,9 +280,7 @@ export async function getIncomingMembershipsForOwner(ownerId) {
 
   const applicantIds = [
     ...new Set(
-      memberships.map((membership) =>
-        membership.applicantId.toString(),
-      ),
+      memberships.map((membership) => membership.applicantId.toString()),
     ),
   ];
 
@@ -335,9 +289,7 @@ export async function getIncomingMembershipsForOwner(ownerId) {
     .find(
       {
         _id: {
-          $in: applicantIds.map(
-            (applicantId) => new ObjectId(applicantId),
-          ),
+          $in: applicantIds.map((applicantId) => new ObjectId(applicantId)),
         },
       },
       {
@@ -351,10 +303,7 @@ export async function getIncomingMembershipsForOwner(ownerId) {
     .toArray();
 
   const applicantsById = new Map(
-    applicants.map((applicant) => [
-      applicant._id.toString(),
-      applicant,
-    ]),
+    applicants.map((applicant) => [applicant._id.toString(), applicant]),
   );
 
   return memberships.map((membership) => ({

@@ -201,10 +201,7 @@ export async function editUser(request, response, next) {
       }
     }
 
-    const updatedUser = await updateUserById(
-      request.params.id,
-      profileUpdates,
-    );
+    const updatedUser = await updateUserById(request.params.id, profileUpdates);
 
     return response.status(200).json({
       success: true,

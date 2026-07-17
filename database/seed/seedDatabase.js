@@ -30,9 +30,7 @@ async function seedDatabase() {
       .toArray();
 
     if (users.length === 0) {
-      throw new Error(
-        "No users found. Import users before seeding projects.",
-      );
+      throw new Error("No users found. Import users before seeding projects.");
     }
 
     const ownerIds = users.map((user) => user._id);

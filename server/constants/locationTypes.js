@@ -1,5 +1,1 @@
-export const LOCATION_TYPES = [
-  "Remote",
-  "Hybrid",
-  "In Person",
-];
+export const LOCATION_TYPES = ["Remote", "Hybrid", "In Person"];

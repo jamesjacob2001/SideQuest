@@ -70,27 +70,18 @@ function findRoleTemplate(roleTitle) {
 }
 
 function randomInteger(minimum, maximum) {
-  return (
-    Math.floor(Math.random() * (maximum - minimum + 1)) + minimum
-  );
+  return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 }
 
 function randomSubset(items, minimum, maximum) {
   const shuffledItems = [...items].sort(() => Math.random() - 0.5);
-  const count = randomInteger(
-    minimum,
-    Math.min(maximum, shuffledItems.length),
-  );
+  const count = randomInteger(minimum, Math.min(maximum, shuffledItems.length));
 
   return shuffledItems.slice(0, count);
 }
 
 function generateRoles(theme, count) {
-  const selectedRoleTitles = randomSubset(
-    theme.roleTypes,
-    count,
-    count,
-  );
+  const selectedRoleTitles = randomSubset(theme.roleTypes, count, count);
 
   return selectedRoleTitles.map((roleTitle) => {
     const roleTemplate = findRoleTemplate(roleTitle);
@@ -101,28 +92,23 @@ function generateRoles(theme, count) {
 
     const compatibleSkills = roleTemplate.suggestedSkills.filter(
       (skill) =>
-        theme.technologies.includes(skill) ||
-        !TECHNOLOGY_LIST.includes(skill),
+        theme.technologies.includes(skill) || !TECHNOLOGY_LIST.includes(skill),
     );
 
     const availableSkills =
-        compatibleSkills.length > 0
-            ? compatibleSkills
-            : randomSubset(
-                theme.technologies,
-                1,
-                Math.min(3, theme.technologies.length),
-            );
+      compatibleSkills.length > 0
+        ? compatibleSkills
+        : randomSubset(
+            theme.technologies,
+            1,
+            Math.min(3, theme.technologies.length),
+          );
 
     return {
       roleId: randomUUID(),
       title: roleTemplate.title,
       description: roleTemplate.description,
-      requiredSkills: randomSubset(
-        availableSkills,
-        1,
-        availableSkills.length,
-      ),
+      requiredSkills: randomSubset(availableSkills, 1, availableSkills.length),
       experienceLevel: randomItem(EXPERIENCE_LEVELS),
       totalPositions: randomInteger(1, 3),
     };
@@ -135,9 +121,7 @@ function generateCreatedAt(index) {
   const randomHours = randomInteger(0, 23);
 
   return new Date(
-    now -
-      daysAgo * 24 * 60 * 60 * 1000 -
-      randomHours * 60 * 60 * 1000,
+    now - daysAgo * 24 * 60 * 60 * 1000 - randomHours * 60 * 60 * 1000,
   );
 }
 
@@ -178,8 +162,8 @@ export function generateProjects(count = 1000, ownerIds = []) {
       title: generateProjectTitle(theme, index),
       tagline:
         theme.taglines?.length > 0
-            ? randomItem(theme.taglines)
-            : randomItem(PROJECT_TAGLINES),
+          ? randomItem(theme.taglines)
+          : randomItem(PROJECT_TAGLINES),
       description: {
         overview: `${randomItem(PROJECT_OVERVIEWS)} The project focuses on ${theme.name.toLowerCase()}.`,
         goals: randomItem(PROJECT_GOALS),

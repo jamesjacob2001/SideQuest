@@ -14,11 +14,7 @@ export const PROJECT_THEMES = [
       "Turning academic goals into clear, manageable actions.",
       "Making study planning simpler and more consistent.",
     ],
-    categories: [
-      "Web Development",
-      "Mobile Development",
-      "Design",
-    ],
+    categories: ["Web Development", "Mobile Development", "Design"],
     technologies: [
       "React",
       "JavaScript",
@@ -50,11 +46,7 @@ export const PROJECT_THEMES = [
       "Turning career preparation into a structured, manageable process.",
       "Helping students present their skills and experience effectively.",
     ],
-    categories: [
-      "AI / Machine Learning",
-      "Web Development",
-      "Design",
-    ],
+    categories: ["AI / Machine Learning", "Web Development", "Design"],
     technologies: [
       "React",
       "Node.js",
@@ -86,11 +78,7 @@ export const PROJECT_THEMES = [
       "Connecting students with events, groups, and useful resources.",
       "Building better digital tools for campus communities.",
     ],
-    categories: [
-      "Web Development",
-      "Mobile Development",
-      "Open Source",
-    ],
+    categories: ["Web Development", "Mobile Development", "Open Source"],
     technologies: [
       "React",
       "React Native",
@@ -122,11 +110,7 @@ export const PROJECT_THEMES = [
       "Making student collaboration easier to organize and manage.",
       "Connecting people through shared goals and interests.",
     ],
-    categories: [
-      "Web Development",
-      "Open Source",
-      "Research",
-    ],
+    categories: ["Web Development", "Open Source", "Research"],
     technologies: [
       "React",
       "Node.js",
@@ -158,11 +142,7 @@ export const PROJECT_THEMES = [
       "Making personal finance easier to track and visualize.",
       "Turning financial information into useful, actionable insights.",
     ],
-    categories: [
-      "Entrepreneurship",
-      "Data Science",
-      "Web Development",
-    ],
+    categories: ["Entrepreneurship", "Data Science", "Web Development"],
     technologies: [
       "React",
       "Node.js",
@@ -194,11 +174,7 @@ export const PROJECT_THEMES = [
       "Making personal wellness progress easier to understand.",
       "Supporting better habits through simple tracking tools.",
     ],
-    categories: [
-      "Mobile Development",
-      "Web Development",
-      "Design",
-    ],
+    categories: ["Mobile Development", "Web Development", "Design"],
     technologies: [
       "React",
       "React Native",
@@ -230,11 +206,7 @@ export const PROJECT_THEMES = [
       "Making local buying, selling, and discovery more convenient.",
       "Creating a trusted marketplace for student communities.",
     ],
-    categories: [
-      "Entrepreneurship",
-      "Web Development",
-      "Mobile Development",
-    ],
+    categories: ["Entrepreneurship", "Web Development", "Mobile Development"],
     technologies: [
       "React",
       "Node.js",
@@ -266,11 +238,7 @@ export const PROJECT_THEMES = [
       "Using technology to support more accessible local communities.",
       "Helping users participate in practical community initiatives.",
     ],
-    categories: [
-      "Open Source",
-      "Mobile Development",
-      "Design",
-    ],
+    categories: ["Open Source", "Mobile Development", "Design"],
     technologies: [
       "React",
       "React Native",
@@ -302,11 +270,7 @@ export const PROJECT_THEMES = [
       "Exploring practical applications of machine learning.",
       "Helping users understand complex information through data.",
     ],
-    categories: [
-      "AI / Machine Learning",
-      "Data Science",
-      "Research",
-    ],
+    categories: ["AI / Machine Learning", "Data Science", "Research"],
     technologies: [
       "Python",
       "TensorFlow",
@@ -338,11 +302,7 @@ export const PROJECT_THEMES = [
       "Exploring game design through collaborative development.",
       "Creating engaging experiences with modern game technology.",
     ],
-    categories: [
-      "Game Development",
-      "Creative",
-      "Design",
-    ],
+    categories: ["Game Development", "Creative", "Design"],
     technologies: [
       "Unity",
       "Unreal Engine",
@@ -373,19 +333,8 @@ export const PROJECT_THEMES = [
       "Exploring robotics through collaborative prototype development.",
       "Building intelligent systems for real-world environments.",
     ],
-    categories: [
-      "Robotics",
-      "Research",
-      "Open Source",
-    ],
-    technologies: [
-      "Python",
-      "C++",
-      "Linux",
-      "Docker",
-      "Git",
-      "GitHub",
-    ],
+    categories: ["Robotics", "Research", "Open Source"],
+    technologies: ["Python", "C++", "Linux", "Docker", "Git", "GitHub"],
     roleTypes: [
       "Backend Developer",
       "Machine Learning Developer",

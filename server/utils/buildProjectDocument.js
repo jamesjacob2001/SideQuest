@@ -22,9 +22,7 @@ export function buildProjectDocument(projectData, ownerId) {
   const roles = projectData.roles.map((role) => ({
     roleId: generateRoleId(),
     title: normalizeString(role.title),
-    description: role.description
-      ? normalizeString(role.description)
-      : null,
+    description: role.description ? normalizeString(role.description) : null,
     requiredSkills: normalizeStringArray(role.requiredSkills),
     experienceLevel: role.experienceLevel,
     totalPositions: role.totalPositions,
@@ -37,9 +35,7 @@ export function buildProjectDocument(projectData, ownerId) {
     description: {
       overview: normalizeString(projectData.description.overview),
       goals: normalizeString(projectData.description.goals),
-      currentProgress: normalizeString(
-        projectData.description.currentProgress,
-      ),
+      currentProgress: normalizeString(projectData.description.currentProgress),
       lookingFor: normalizeString(projectData.description.lookingFor),
     },
     categories: normalizeStringArray(projectData.categories),
@@ -65,11 +61,7 @@ export function buildProjectDocument(projectData, ownerId) {
   };
 }
 
-
-export function buildUpdatedProjectDocument(
-  existingProject,
-  projectUpdates,
-) {
+export function buildUpdatedProjectDocument(existingProject, projectUpdates) {
   const descriptionUpdates = projectUpdates.description ?? {};
 
   const description = {
@@ -201,11 +193,7 @@ export function buildUpdatedProjectDocument(
       "compensation",
     ),
 
-    status: selectUpdatedValue(
-      existingProject,
-      projectUpdates,
-      "status",
-    ),
+    status: selectUpdatedValue(existingProject, projectUpdates, "status"),
 
     createdAt: existingProject.createdAt,
   };

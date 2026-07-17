@@ -5,7 +5,6 @@ import { getProjects } from "../services/projectApi.js";
 import styles from "./ProjectsPage.module.css";
 import ProjectPagination from "../components/projects/ProjectPagination.jsx";
 
-
 const PROJECTS_PER_PAGE = 24;
 
 function ProjectsPage() {
@@ -28,10 +27,7 @@ function ProjectsPage() {
       setErrorMessage("");
 
       try {
-        const projectData = await getProjects(
-          currentPage,
-          PROJECTS_PER_PAGE,
-        );
+        const projectData = await getProjects(currentPage, PROJECTS_PER_PAGE);
 
         setProjects(projectData.projects);
         setPagination(projectData.pagination);
@@ -106,17 +102,15 @@ function ProjectsPage() {
           <p className={styles.eyebrow}>Project discovery</p>
           <h1>Browse Projects</h1>
           <p className={styles.introduction}>
-            Explore student projects, discover open roles, and find a
-            team that matches your interests and skills.
+            Explore student projects, discover open roles, and find a team that
+            matches your interests and skills.
           </p>
         </div>
 
         {!isLoading && !errorMessage && projects.length > 0 && (
           <p className={styles.projectCount}>
             {pagination.totalProjects}{" "}
-            {pagination.totalProjects === 1
-              ? "project"
-              : "projects"}
+            {pagination.totalProjects === 1 ? "project" : "projects"}
           </p>
         )}
       </header>

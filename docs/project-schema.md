@@ -10,14 +10,14 @@ Each document in the `projects` collection represents one side project created b
 
 Each project has:
 
-* One owner
-* One or more project categories
-* One or more technologies
-* One or more project roles
-* Zero or more accepted team members
-* Structured project-description sections
-* Searchable project metadata
-* A manually managed project status
+- One owner
+- One or more project categories
+- One or more technologies
+- One or more project roles
+- Zero or more accepted team members
+- Structured project-description sections
+- Searchable project metadata
+- A manually managed project status
 
 Project team capacity is calculated from the total number of positions across all roles. A separate `teamSize` field is not stored.
 
@@ -83,37 +83,37 @@ SideQuest will display compensation information but will not process payments.
 
 ## Project Business Rules
 
-* Any authenticated user may create a project.
-* Project titles do not need to be unique.
-* Every project must contain at least one category.
-* A project may contain multiple categories.
-* Selecting `Other` requires at least one custom category.
-* Custom categories do not automatically become approved default categories.
-* Every project must contain at least one technology.
-* Custom technologies may be stored on a project but do not automatically become approved default technologies.
-* Technology comparisons should be case-insensitive.
-* Every project must contain at least one role.
-* Every role must contain at least one position.
-* Every role must have a unique `roleId` within its project.
-* Multiple roles may require the same skill.
-* Team capacity is calculated from the sum of all role positions.
-* A separate `teamSize` field is not stored.
-* The project owner may occupy one of the listed project roles.
-* One user may occupy only one role per project during Project 3.
-* A user may have only one pending request per project. Each pending request targets one role.
-* A role cannot be deleted while accepted members occupy it.
-* A role’s `totalPositions` cannot be reduced below its accepted-member count.
-* Recruiting automatically closes when every role position is filled.
-* Project status is otherwise selected manually by the project owner.
-* Projects are public by default.
-* Unauthenticated users may browse public projects.
-* Only authenticated users may access the Create Project page.
-* Paused projects remain visible in public project results.
-* Completed projects are removed from public project results.
-* Completed projects may still appear on user profiles.
-* Project owners may not freely change structural information in ways that conflict with accepted team memberships.
-* Deleting a project permanently deletes its associated team-membership documents.
-* Project deletion requires user confirmation.
+- Any authenticated user may create a project.
+- Project titles do not need to be unique.
+- Every project must contain at least one category.
+- A project may contain multiple categories.
+- Selecting `Other` requires at least one custom category.
+- Custom categories do not automatically become approved default categories.
+- Every project must contain at least one technology.
+- Custom technologies may be stored on a project but do not automatically become approved default technologies.
+- Technology comparisons should be case-insensitive.
+- Every project must contain at least one role.
+- Every role must contain at least one position.
+- Every role must have a unique `roleId` within its project.
+- Multiple roles may require the same skill.
+- Team capacity is calculated from the sum of all role positions.
+- A separate `teamSize` field is not stored.
+- The project owner may occupy one of the listed project roles.
+- One user may occupy only one role per project during Project 3.
+- A user may have only one pending request per project. Each pending request targets one role.
+- A role cannot be deleted while accepted members occupy it.
+- A role’s `totalPositions` cannot be reduced below its accepted-member count.
+- Recruiting automatically closes when every role position is filled.
+- Project status is otherwise selected manually by the project owner.
+- Projects are public by default.
+- Unauthenticated users may browse public projects.
+- Only authenticated users may access the Create Project page.
+- Paused projects remain visible in public project results.
+- Completed projects are removed from public project results.
+- Completed projects may still appear on user profiles.
+- Project owners may not freely change structural information in ways that conflict with accepted team memberships.
+- Deleting a project permanently deletes its associated team-membership documents.
+- Project deletion requires user confirmation.
 
 ## Team Memberships Collection
 
@@ -121,12 +121,12 @@ Each document in the `team_memberships` collection represents one user’s relat
 
 This collection supports:
 
-* Project ownership
-* Join requests
-* Accepted team members
-* Role assignments
-* Former members
-* Completed-project profile visibility
+- Project ownership
+- Join requests
+- Accepted team members
+- Role assignments
+- Former members
+- Completed-project profile visibility
 
 A user may have only one team-membership document per project.
 
@@ -149,24 +149,24 @@ A user may have only one team-membership document per project.
 
 ## Team Membership Business Rules
 
-* One user may have only one team-membership document per project.
-* Every project owner must have an accepted team-membership document.
-* Ownership permission is determined by the project’s `ownerId` and the membership’s `membershipType`.
-* An owner may act only as an organizer and have no assigned `roleId`.
-* An owner may instead occupy one of the project’s listed roles.
-* The owner should not receive separate owner and contributor membership documents.
-* A regular member must be associated with a valid project role.
-* New join requests begin with a `Pending` status.
-* Only the project owner may accept or decline a pending request.
-* Accepted memberships count toward the associated role’s filled positions.
-* A user may have multiple pending role requests only if the implementation stores the requested role choices within the same membership workflow.
-* Once a user is accepted into one role, other pending requests for that project must be withdrawn or declined.
-* Members may leave active projects.
-* When a member leaves, their role position becomes available again.
-* Members cannot remove themselves from completed-project history.
-* Users may mark completed projects as private on their profiles.
-* Owners may not leave their own project during Project 3.
-* Deleting a project permanently deletes all team-membership documents associated with it.
+- One user may have only one team-membership document per project.
+- Every project owner must have an accepted team-membership document.
+- Ownership permission is determined by the project’s `ownerId` and the membership’s `membershipType`.
+- An owner may act only as an organizer and have no assigned `roleId`.
+- An owner may instead occupy one of the project’s listed roles.
+- The owner should not receive separate owner and contributor membership documents.
+- A regular member must be associated with a valid project role.
+- New join requests begin with a `Pending` status.
+- Only the project owner may accept or decline a pending request.
+- Accepted memberships count toward the associated role’s filled positions.
+- A user may have multiple pending role requests only if the implementation stores the requested role choices within the same membership workflow.
+- Once a user is accepted into one role, other pending requests for that project must be withdrawn or declined.
+- Members may leave active projects.
+- When a member leaves, their role position becomes available again.
+- Members cannot remove themselves from completed-project history.
+- Users may mark completed projects as private on their profiles.
+- Owners may not leave their own project during Project 3.
+- Deleting a project permanently deletes all team-membership documents associated with it.
 
 ## Approved Project Categories
 
@@ -174,43 +174,43 @@ The initial approved categories are defined in `server/constants/categories.js`.
 
 Current categories include:
 
-* Web Development
-* Mobile Development
-* AI / Machine Learning
-* Data Science
-* Game Development
-* Research
-* Robotics
-* Open Source
-* Entrepreneurship
-* Design
-* Creative
-* Other
+- Web Development
+- Mobile Development
+- AI / Machine Learning
+- Data Science
+- Game Development
+- Research
+- Robotics
+- Open Source
+- Entrepreneurship
+- Design
+- Creative
+- Other
 
 ## Approved Experience Levels
 
 The approved experience levels are defined in `server/constants/experienceLevels.js`.
 
-* Open to All Levels
-* Beginner Friendly
-* Intermediate
-* Advanced
+- Open to All Levels
+- Beginner Friendly
+- Intermediate
+- Advanced
 
 ## Approved Location Types
 
 The approved location types are defined in `server/constants/locationTypes.js`.
 
-* Remote
-* Hybrid
-* In Person
+- Remote
+- Hybrid
+- In Person
 
 ## Approved Project Statuses
 
 The approved project statuses are defined in `server/constants/projectStatuses.js`.
 
-* Recruiting
-* Active
-* Paused
-* Completed
+- Recruiting
+- Active
+- Paused
+- Completed
 
 `Full` is not stored as a project status. Whether a project is full is calculated from accepted team memberships and available role positions.

@@ -14,10 +14,7 @@ function ProjectPagination({
   }
 
   return (
-    <nav
-      className={styles.pagination}
-      aria-label="Project pages"
-    >
+    <nav className={styles.pagination} aria-label="Project pages">
       <button
         className={styles.button}
         type="button"

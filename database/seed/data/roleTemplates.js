@@ -7,14 +7,12 @@ export const ROLE_TEMPLATES = [
   },
   {
     title: "Backend Developer",
-    description:
-      "Develop API routes, validation, and database operations.",
+    description: "Develop API routes, validation, and database operations.",
     suggestedSkills: ["Node.js", "Express", "MongoDB", "JavaScript"],
   },
   {
     title: "Full Stack Developer",
-    description:
-      "Work across the frontend, backend, and database layers.",
+    description: "Work across the frontend, backend, and database layers.",
     suggestedSkills: ["React", "Node.js", "Express", "MongoDB"],
   },
   {
@@ -31,8 +29,7 @@ export const ROLE_TEMPLATES = [
   },
   {
     title: "Mobile Developer",
-    description:
-      "Develop and test mobile-focused application features.",
+    description: "Develop and test mobile-focused application features.",
     suggestedSkills: ["React Native", "JavaScript", "Git"],
   },
   {
@@ -49,14 +46,12 @@ export const ROLE_TEMPLATES = [
   },
   {
     title: "QA Engineer",
-    description:
-      "Test user workflows, document bugs, and improve reliability.",
+    description: "Test user workflows, document bugs, and improve reliability.",
     suggestedSkills: ["Testing", "GitHub", "JavaScript"],
   },
   {
-  title: "Game Developer",
-  description:
-    "Build interactive gameplay systems and test game mechanics.",
-  suggestedSkills: ["Unity", "Unreal Engine", "C++", "Git"],
-},
+    title: "Game Developer",
+    description: "Build interactive gameplay systems and test game mechanics.",
+    suggestedSkills: ["Unity", "Unreal Engine", "C++", "Git"],
+  },
 ];

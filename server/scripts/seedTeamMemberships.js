@@ -116,8 +116,7 @@ async function seedTeamMemberships() {
     const maxAttempts = targetCount * 20;
 
     while (
-      documents.filter((doc) => doc.status === status).length <
-        targetCount &&
+      documents.filter((doc) => doc.status === status).length < targetCount &&
       attempts < maxAttempts
     ) {
       attempts += 1;
@@ -129,11 +128,7 @@ async function seedTeamMemberships() {
           .map((key) => key.slice(pairKeyPrefix.length)),
       );
 
-      const applicant = pickApplicant(
-        users,
-        project.ownerId,
-        usedOnProject,
-      );
+      const applicant = pickApplicant(users, project.ownerId, usedOnProject);
 
       if (!applicant || !project.roles?.length) {
         continue;

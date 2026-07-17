@@ -1,8 +1,4 @@
-export const USER_EXPERIENCE_LEVELS = [
-  "Beginner",
-  "Intermediate",
-  "Advanced",
-];
+export const USER_EXPERIENCE_LEVELS = ["Beginner", "Intermediate", "Advanced"];
 
 export const AVAILABILITY_OPTIONS = [
   "1-3 hrs/week",

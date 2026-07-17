@@ -79,10 +79,8 @@ AcademicFields.propTypes = {
     university: PropTypes.string.isRequired,
     major: PropTypes.string.isRequired,
     yearLabel: PropTypes.string.isRequired,
-    graduationYear: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.string,
-    ]).isRequired,
+    graduationYear: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+      .isRequired,
   }).isRequired,
   onChange: PropTypes.func.isRequired,
 };

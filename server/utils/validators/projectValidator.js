@@ -3,7 +3,6 @@ import { EXPERIENCE_LEVELS } from "../../constants/experienceLevels.js";
 import { LOCATION_TYPES } from "../../constants/locationTypes.js";
 import { PROJECT_STATUSES } from "../../constants/projectStatuses.js";
 
-
 function isNonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
 }
@@ -21,12 +20,8 @@ function isOptionalNonEmptyString(value) {
 }
 
 function isStringArrayAllowEmpty(value) {
-  return (
-    Array.isArray(value) &&
-    value.every((item) => isNonEmptyString(item))
-  );
+  return Array.isArray(value) && value.every((item) => isNonEmptyString(item));
 }
-
 
 function validateRole(role, index) {
   const errors = [];
@@ -36,13 +31,14 @@ function validateRole(role, index) {
     return [`${label} must be an object.`];
   }
 
-
   if (!isNonEmptyString(role.title)) {
     errors.push(`${label} must have a title.`);
   }
 
   if (!isOptionalNonEmptyString(role.description)) {
-    errors.push(`${label} description must be a non-empty string when provided.`);
+    errors.push(
+      `${label} description must be a non-empty string when provided.`,
+    );
   }
 
   if (!isStringArray(role.requiredSkills)) {
@@ -53,16 +49,12 @@ function validateRole(role, index) {
     errors.push(`${label} must have a valid experience level.`);
   }
 
-  if (
-    !Number.isInteger(role.totalPositions) ||
-    role.totalPositions < 1
-  ) {
+  if (!Number.isInteger(role.totalPositions) || role.totalPositions < 1) {
     errors.push(`${label} totalPositions must be an integer of at least 1.`);
   }
 
   return errors;
 }
-
 
 export function validateProject(project) {
   const errors = [];
@@ -118,14 +110,12 @@ export function validateProject(project) {
   }
 
   if (
-  project.customCategories !== undefined &&
-  project.customCategories !== null &&
-  !isStringArrayAllowEmpty(project.customCategories)
-) {
-  errors.push(
-    "Custom categories must be an array of non-empty strings.",
-  );
-}
+    project.customCategories !== undefined &&
+    project.customCategories !== null &&
+    !isStringArrayAllowEmpty(project.customCategories)
+  ) {
+    errors.push("Custom categories must be an array of non-empty strings.");
+  }
 
   if (
     Array.isArray(project.categories) &&
@@ -162,9 +152,7 @@ export function validateProject(project) {
   }
 
   if (!isOptionalNonEmptyString(project.weeklyCommitment)) {
-    errors.push(
-      "Weekly commitment must be a non-empty string when provided.",
-    );
+    errors.push("Weekly commitment must be a non-empty string when provided.");
   }
 
   if (!isOptionalNonEmptyString(project.duration)) {
@@ -175,10 +163,7 @@ export function validateProject(project) {
     errors.push("A valid project status is required.");
   }
 
-  if (
-    project.compensation !== undefined &&
-    project.compensation !== null
-  ) {
+  if (project.compensation !== undefined && project.compensation !== null) {
     if (
       typeof project.compensation !== "object" ||
       Array.isArray(project.compensation)
@@ -186,7 +171,9 @@ export function validateProject(project) {
       errors.push("Compensation must be an object when provided.");
     } else {
       if (!isNonEmptyString(project.compensation.type)) {
-        errors.push("Compensation type is required when compensation is provided.");
+        errors.push(
+          "Compensation type is required when compensation is provided.",
+        );
       }
 
       if (

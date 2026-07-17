@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, useParams, useNavigate, } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../components/auth/useAuth.js";
 import ProjectOwner from "../components/projects/ProjectOwner.jsx";
 import ProjectRoleCard from "../components/projects/ProjectRoleCard.jsx";
-import { getProjectById, deleteProject, } from "../services/projectApi.js";
+import { getProjectById, deleteProject } from "../services/projectApi.js";
 import styles from "./ProjectDetailsPage.module.css";
 
 function ProjectDetailsPage() {
   const { projectId } = useParams();
   const navigate = useNavigate();
-  const {
-    user: currentUser,
-    isAuthenticated,
-  } = useAuth();
+  const { user: currentUser, isAuthenticated } = useAuth();
 
   const [project, setProject] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -104,8 +101,7 @@ function ProjectDetailsPage() {
   } = project;
 
   const allCategories = [...categories, ...customCategories];
-  const isOwner =
-    currentUser?._id?.toString() === String(project.ownerId);
+  const isOwner = currentUser?._id?.toString() === String(project.ownerId);
 
   return (
     <main className={styles.page}>
@@ -246,8 +242,7 @@ function ProjectDetailsPage() {
                     {compensation.type}
                     {compensation.amount !== undefined &&
                       ` — ${compensation.amount}`}
-                    {compensation.currency &&
-                      ` ${compensation.currency}`}
+                    {compensation.currency && ` ${compensation.currency}`}
                   </dd>
                 </div>
               )}
