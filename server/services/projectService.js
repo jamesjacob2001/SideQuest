@@ -157,10 +157,19 @@ export async function updateProjectById(
 
 export async function deleteProjectById(projectId) {
   const database = getDatabase();
+  const objectId = new ObjectId(projectId);
 
   const result = await database.collection("projects").deleteOne({
-    _id: new ObjectId(projectId),
+    _id: objectId,
   });
 
-  return result.deletedCount === 1;
+  if (result.deletedCount !== 1) {
+    return false;
+  }
+
+  await database.collection("team_memberships").deleteMany({
+    projectId: objectId,
+  });
+
+  return true;
 }
