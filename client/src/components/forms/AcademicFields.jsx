@@ -1,15 +1,19 @@
 import PropTypes from "prop-types";
+import { useCallback, memo } from "react";
 
 import { YEAR_LABELS } from "../../constants/userOptions.js";
 import styles from "./ProfileForm.module.css";
 
 function AcademicFields({ values, onChange }) {
-  function updateField(field, value) {
-    onChange({
-      ...values,
-      [field]: value,
-    });
-  }
+  const updateField = useCallback(
+    (field, value) => {
+      onChange({
+        ...values,
+        [field]: value,
+      });
+    },
+    [values, onChange],
+  );
 
   return (
     <section className={styles.formSection}>
@@ -85,4 +89,4 @@ AcademicFields.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default AcademicFields;
+export default memo(AcademicFields);

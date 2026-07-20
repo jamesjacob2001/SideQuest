@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useCallback, memo } from "react";
 
 import {
   AVAILABILITY_OPTIONS,
@@ -7,12 +8,15 @@ import {
 import styles from "./ProfileForm.module.css";
 
 function AvailabilityFields({ values, onChange }) {
-  function updateField(field, value) {
-    onChange({
-      ...values,
-      [field]: value,
-    });
-  }
+  const updateField = useCallback(
+    (field, value) => {
+      onChange({
+        ...values,
+        [field]: value,
+      });
+    },
+    [values, onChange],
+  );
 
   return (
     <section className={styles.formSection}>
@@ -79,4 +83,4 @@ AvailabilityFields.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default AvailabilityFields;
+export default memo(AvailabilityFields);

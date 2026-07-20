@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import styles from "./ProfileDetails.module.css";
 
@@ -20,6 +21,8 @@ DetailItem.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
+const MemoizedDetailItem = memo(DetailItem);
+
 function ProfileDetails({
   bio,
   location,
@@ -40,11 +43,11 @@ function ProfileDetails({
       {bio ? <p className={styles.bio}>{bio}</p> : null}
 
       <dl className={styles.list}>
-        <DetailItem label="Location" value={location} />
-        <DetailItem label="Experience" value={experienceLevel} />
-        <DetailItem label="Availability" value={availability} />
-        <DetailItem label="Year" value={yearLabel} />
-        <DetailItem label="Graduation year" value={graduationYear} />
+        <MemoizedDetailItem label="Location" value={location} />
+        <MemoizedDetailItem label="Experience" value={experienceLevel} />
+        <MemoizedDetailItem label="Availability" value={availability} />
+        <MemoizedDetailItem label="Year" value={yearLabel} />
+        <MemoizedDetailItem label="Graduation year" value={graduationYear} />
       </dl>
     </section>
   );
@@ -59,4 +62,4 @@ ProfileDetails.propTypes = {
   graduationYear: PropTypes.number,
 };
 
-export default ProfileDetails;
+export default memo(ProfileDetails);

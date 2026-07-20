@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import ProjectCard from "./ProjectCard.jsx";
 import styles from "./ProjectGrid.module.css";
@@ -21,4 +22,4 @@ ProjectGrid.propTypes = {
   ).isRequired,
 };
 
-export default ProjectGrid;
+export default memo(ProjectGrid);

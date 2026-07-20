@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 
 import ProjectOwner from "./ProjectOwner.jsx";
@@ -121,4 +122,4 @@ ProjectCard.propTypes = {
   }).isRequired,
 };
 
-export default ProjectCard;
+export default memo(ProjectCard);

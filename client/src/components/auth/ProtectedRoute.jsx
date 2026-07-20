@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
 import { useAuth } from "./useAuth.js";
@@ -22,4 +23,4 @@ ProtectedRoute.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default ProtectedRoute;
+export default memo(ProtectedRoute);

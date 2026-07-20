@@ -1,3 +1,5 @@
+import { useCallback } from "react";
+import { memo } from "react";
 import { NavLink } from "react-router-dom";
 
 import { useAuth } from "../auth/useAuth.js";
@@ -6,13 +8,13 @@ import styles from "./Navbar.module.css";
 function Navbar() {
   const { user, isAuthenticated, logout, isLoading } = useAuth();
 
-  async function handleLogout() {
+  const handleLogout = useCallback(async () => {
     try {
       await logout();
     } catch {
       // Keep navbar usable even if logout request fails.
     }
-  }
+  }, [logout]);
 
   return (
     <header className={styles.header}>
@@ -49,4 +51,4 @@ function Navbar() {
   );
 }
 
-export default Navbar;
+export default memo(Navbar);

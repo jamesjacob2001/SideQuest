@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo, useCallback } from "react";
 
 import styles from "./ProjectPagination.module.css";
 
@@ -9,6 +10,14 @@ function ProjectPagination({
   hasNextPage,
   onPageChange,
 }) {
+  const handlePreviousClick = useCallback(() => {
+    onPageChange(page - 1);
+  }, [page, onPageChange]);
+
+  const handleNextClick = useCallback(() => {
+    onPageChange(page + 1);
+  }, [page, onPageChange]);
+
   if (totalPages <= 1) {
     return null;
   }
@@ -18,7 +27,7 @@ function ProjectPagination({
       <button
         className={styles.button}
         type="button"
-        onClick={() => onPageChange(page - 1)}
+        onClick={handlePreviousClick}
         disabled={!hasPreviousPage}
       >
         Previous
@@ -31,7 +40,7 @@ function ProjectPagination({
       <button
         className={styles.button}
         type="button"
-        onClick={() => onPageChange(page + 1)}
+        onClick={handleNextClick}
         disabled={!hasNextPage}
       >
         Next
@@ -48,4 +57,4 @@ ProjectPagination.propTypes = {
   onPageChange: PropTypes.func.isRequired,
 };
 
-export default ProjectPagination;
+export default memo(ProjectPagination);

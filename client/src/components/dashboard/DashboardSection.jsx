@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import styles from "./DashboardSection.module.css";
 
@@ -31,4 +32,4 @@ DashboardSection.propTypes = {
   isEmpty: PropTypes.bool,
 };
 
-export default DashboardSection;
+export default memo(DashboardSection);

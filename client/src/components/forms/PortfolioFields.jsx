@@ -1,14 +1,18 @@
 import PropTypes from "prop-types";
+import { useCallback, memo } from "react";
 
 import styles from "./ProfileForm.module.css";
 
 function PortfolioFields({ values, onChange }) {
-  function updateField(field, value) {
-    onChange({
-      ...values,
-      [field]: value,
-    });
-  }
+  const updateField = useCallback(
+    (field, value) => {
+      onChange({
+        ...values,
+        [field]: value,
+      });
+    },
+    [values, onChange],
+  );
 
   return (
     <section className={styles.formSection}>
@@ -56,4 +60,4 @@ PortfolioFields.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default PortfolioFields;
+export default memo(PortfolioFields);

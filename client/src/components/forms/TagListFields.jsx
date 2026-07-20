@@ -1,34 +1,40 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useCallback, useState, memo } from "react";
 
 import styles from "./ProfileForm.module.css";
 
 function TagListFields({ id, label, values, onChange, placeholder }) {
   const [draft, setDraft] = useState("");
 
-  function handleAdd(event) {
-    event.preventDefault();
+  const handleAdd = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    const nextValue = draft.trim();
+      const nextValue = draft.trim();
 
-    if (!nextValue) {
-      return;
-    }
+      if (!nextValue) {
+        return;
+      }
 
-    if (
-      values.some((value) => value.toLowerCase() === nextValue.toLowerCase())
-    ) {
+      if (
+        values.some((value) => value.toLowerCase() === nextValue.toLowerCase())
+      ) {
+        setDraft("");
+        return;
+      }
+
+      onChange([...values, nextValue]);
       setDraft("");
-      return;
-    }
+    },
+    [draft, values, onChange],
+  );
 
-    onChange([...values, nextValue]);
-    setDraft("");
-  }
-
-  function handleRemove(valueToRemove) {
-    onChange(values.filter((value) => value !== valueToRemove));
-  }
+  const handleRemove = useCallback(
+    (valueToRemove) => {
+      onChange(values.filter((value) => value !== valueToRemove));
+    },
+    [values, onChange],
+  );
 
   return (
     <div className={styles.field}>
@@ -75,4 +81,4 @@ TagListFields.propTypes = {
   placeholder: PropTypes.string,
 };
 
-export default TagListFields;
+export default memo(TagListFields);

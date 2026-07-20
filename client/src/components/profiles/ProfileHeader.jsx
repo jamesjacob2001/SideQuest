@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import { buildProfileAvatarUrl } from "./buildProfileAvatarUrl.js";
 import styles from "./ProfileHeader.module.css";
@@ -37,4 +38,4 @@ ProfileHeader.propTypes = {
   isRecruiting: PropTypes.bool,
 };
 
-export default ProfileHeader;
+export default memo(ProfileHeader);

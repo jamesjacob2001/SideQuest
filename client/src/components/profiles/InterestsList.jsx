@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import styles from "./InterestsList.module.css";
 
@@ -28,4 +29,4 @@ InterestsList.propTypes = {
   interests: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default InterestsList;
+export default memo(InterestsList);

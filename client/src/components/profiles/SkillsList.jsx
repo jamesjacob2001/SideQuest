@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import styles from "./SkillsList.module.css";
 
@@ -28,4 +29,4 @@ SkillsList.propTypes = {
   skills: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default SkillsList;
+export default memo(SkillsList);

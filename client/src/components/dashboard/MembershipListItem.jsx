@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 
 import { buildProfileAvatarUrl } from "../profiles/buildProfileAvatarUrl.js";
@@ -122,4 +123,4 @@ MembershipListItem.propTypes = {
   onWithdraw: PropTypes.func,
 };
 
-export default MembershipListItem;
+export default memo(MembershipListItem);

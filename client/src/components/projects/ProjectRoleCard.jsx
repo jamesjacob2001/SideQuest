@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import PropTypes from "prop-types";
+import { memo } from "react";
 import { Link } from "react-router-dom";
 
 import { createMembership } from "../../services/membershipApi.js";
@@ -19,7 +20,7 @@ function ProjectRoleCard({ role, projectId, isAuthenticated, isOwner }) {
   const [hasApplied, setHasApplied] = useState(false);
   const [applicationError, setApplicationError] = useState("");
 
-  async function handleApply() {
+  const handleApply = useCallback(async () => {
     setApplicationError("");
     setIsApplying(true);
 
@@ -31,7 +32,7 @@ function ProjectRoleCard({ role, projectId, isAuthenticated, isOwner }) {
     } finally {
       setIsApplying(false);
     }
-  }
+  }, [projectId, roleId]);
 
   return (
     <article className={styles.card}>
@@ -111,4 +112,4 @@ ProjectRoleCard.propTypes = {
   isOwner: PropTypes.bool.isRequired,
 };
 
-export default ProjectRoleCard;
+export default memo(ProjectRoleCard);

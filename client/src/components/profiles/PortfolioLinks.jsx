@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import styles from "./PortfolioLinks.module.css";
 
@@ -53,4 +54,4 @@ PortfolioLinks.propTypes = {
   }),
 };
 
-export default PortfolioLinks;
+export default memo(PortfolioLinks);

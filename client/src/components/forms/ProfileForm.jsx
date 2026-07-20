@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import AcademicFields from "./AcademicFields.jsx";
 import AvailabilityFields from "./AvailabilityFields.jsx";
@@ -37,47 +37,50 @@ function ProfileForm({ user, onSubmit, isSubmitting }) {
   const [values, setValues] = useState(() => buildInitialValues(user));
   const [errorMessage, setErrorMessage] = useState("");
 
-  function updateValues(partialValues) {
+  const updateValues = useCallback((partialValues) => {
     setValues((currentValues) => ({
       ...currentValues,
       ...partialValues,
     }));
-  }
+  }, []);
 
-  async function handleSubmit(event) {
-    event.preventDefault();
-    setErrorMessage("");
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      setErrorMessage("");
 
-    const payload = {
-      name: values.name,
-      username: values.username,
-      email: values.email,
-      bio: values.bio || null,
-      location: values.location || null,
-      university: values.university || null,
-      major: values.major || null,
-      yearLabel: values.yearLabel || null,
-      graduationYear:
-        values.graduationYear === "" ? null : values.graduationYear,
-      availability: values.availability || null,
-      experienceLevel: values.experienceLevel || null,
-      isRecruiting: values.isRecruiting,
-      technicalSkills: values.technicalSkills,
-      interests: values.interests,
-      rolePreferences: values.rolePreferences,
-      portfolioLinks: {
-        github: values.portfolioLinks.github || null,
-        linkedin: values.portfolioLinks.linkedin || null,
-        personalSite: values.portfolioLinks.personalSite || null,
-      },
-    };
+      const payload = {
+        name: values.name,
+        username: values.username,
+        email: values.email,
+        bio: values.bio || null,
+        location: values.location || null,
+        university: values.university || null,
+        major: values.major || null,
+        yearLabel: values.yearLabel || null,
+        graduationYear:
+          values.graduationYear === "" ? null : values.graduationYear,
+        availability: values.availability || null,
+        experienceLevel: values.experienceLevel || null,
+        isRecruiting: values.isRecruiting,
+        technicalSkills: values.technicalSkills,
+        interests: values.interests,
+        rolePreferences: values.rolePreferences,
+        portfolioLinks: {
+          github: values.portfolioLinks.github || null,
+          linkedin: values.portfolioLinks.linkedin || null,
+          personalSite: values.portfolioLinks.personalSite || null,
+        },
+      };
 
-    try {
-      await onSubmit(payload);
-    } catch (error) {
-      setErrorMessage(error.message);
-    }
-  }
+      try {
+        await onSubmit(payload);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+    },
+    [values, onSubmit],
+  );
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -149,7 +152,28 @@ function ProfileForm({ user, onSubmit, isSubmitting }) {
 }
 
 ProfileForm.propTypes = {
-  user: PropTypes.object.isRequired,
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    username: PropTypes.string,
+    email: PropTypes.string,
+    bio: PropTypes.string,
+    location: PropTypes.string,
+    university: PropTypes.string,
+    major: PropTypes.string,
+    yearLabel: PropTypes.string,
+    graduationYear: PropTypes.string,
+    availability: PropTypes.string,
+    experienceLevel: PropTypes.string,
+    isRecruiting: PropTypes.bool,
+    technicalSkills: PropTypes.arrayOf(PropTypes.string),
+    interests: PropTypes.arrayOf(PropTypes.string),
+    rolePreferences: PropTypes.arrayOf(PropTypes.string),
+    portfolioLinks: PropTypes.shape({
+      github: PropTypes.string,
+      linkedin: PropTypes.string,
+      personalSite: PropTypes.string,
+    }),
+  }).isRequired,
   onSubmit: PropTypes.func.isRequired,
   isSubmitting: PropTypes.bool,
 };

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { memo } from "react";
 
 import styles from "./RolePreferencesList.module.css";
 
@@ -28,4 +29,4 @@ RolePreferencesList.propTypes = {
   roles: PropTypes.arrayOf(PropTypes.string),
 };
 
-export default RolePreferencesList;
+export default memo(RolePreferencesList);

@@ -1,14 +1,18 @@
 import PropTypes from "prop-types";
+import { useCallback, memo } from "react";
 
 import styles from "./ProfileForm.module.css";
 
 function BasicInfoFields({ values, onChange }) {
-  function updateField(field, value) {
-    onChange({
-      ...values,
-      [field]: value,
-    });
-  }
+  const updateField = useCallback(
+    (field, value) => {
+      onChange({
+        ...values,
+        [field]: value,
+      });
+    },
+    [values, onChange],
+  );
 
   return (
     <section className={styles.formSection}>
@@ -79,4 +83,4 @@ BasicInfoFields.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-export default BasicInfoFields;
+export default memo(BasicInfoFields);

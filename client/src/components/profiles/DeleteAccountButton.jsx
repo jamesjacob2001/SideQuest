@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../auth/useAuth.js";
@@ -12,7 +12,7 @@ function DeleteAccountButton({ userId, userName }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  async function handleDelete() {
+  const handleDelete = useCallback(async () => {
     const confirmed = window.confirm(
       `Delete ${userName}'s account? This cannot be undone.`,
     );
@@ -32,7 +32,7 @@ function DeleteAccountButton({ userId, userName }) {
       setErrorMessage(error.message);
       setIsDeleting(false);
     }
-  }
+  }, [userId, userName, clearAuth, navigate]);
 
   return (
     <div className={styles.wrapper}>
